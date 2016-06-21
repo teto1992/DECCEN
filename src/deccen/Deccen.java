@@ -1,10 +1,6 @@
 package deccen;
 
-import java.util.ArrayList;
-
 import peersim.cdsim.CDProtocol;
-import peersim.config.Configuration;
-import peersim.core.CommonState;
 import peersim.core.Linkable;
 import peersim.core.Node;
 
@@ -15,6 +11,8 @@ public class Deccen implements CDProtocol, Linkable
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public Object clone() { return null; }
 
 	public boolean addNeighbor(Node arg0) {
 		// TODO Auto-generated method stub

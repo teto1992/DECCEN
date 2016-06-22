@@ -1,10 +1,10 @@
-package deccen.core;
+package deccen.protocols;
 
 import peersim.cdsim.CDProtocol;
 import peersim.core.Linkable;
 import peersim.core.Node;
 
-public class Deccen implements CDProtocol, Linkable
+public class ReportProtocolCD implements CDProtocol, Linkable
 {
 
 	public void onKill() {

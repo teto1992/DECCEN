@@ -1,0 +1,27 @@
+
+###### VARIABLES  #####
+VIEW 10
+SHUFFLE 5
+SIZE 10000
+#######################
+
+##### SIMULATION PARAMETER ####
+random.seed 12345678900
+simulation.cycles 1000
+network.size SIZE
+##############################
+
+## PROTOCOL
+protocol.deccen deccen.protocols.Deccen
+
+
+## INITIALIZER
+
+# Initializes the values
+init.initializer DeccenInitializer
+init.initializer.protocol deccen
+
+## CONTROLS
+# Prints statistics of the network
+control.observer peersim.DeccenObserver
+control.observer.protocol deccen

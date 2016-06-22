@@ -8,20 +8,28 @@ SIZE 10000
 ##### SIMULATION PARAMETER ####
 random.seed 12345678900
 simulation.cycles 1000
+
 network.size SIZE
 ##############################
 
 ## PROTOCOL
-protocol.deccen deccen.protocols.Deccen
+
+protocol.closeness deccen.protocols.ClosenessCD
 
 
 ## INITIALIZER
 
 # Initializes the values
 init.initializer DeccenInitializer
-init.initializer.protocol deccen
+
+# initialise overlay 
+
+init.rnd WireKOut
+init.rnd.protocol count
+init.rnd.k 10
+
 
 ## CONTROLS
 # Prints statistics of the network
-control.observer peersim.DeccenObserver
-control.observer.protocol deccen
+control.observer deccen.protocols.DeccenObserver
+control.observer.protocol deccen.controls.DeccenObserver

@@ -5,9 +5,9 @@ import java.util.Hashtable;
 import peersim.core.Node;
 
 public class DistancesTable {
-	public Hashtable<Node,Long> table;
+	public Hashtable<Long,Long> table;
 	
 	public DistancesTable(){
-		table = new Hashtable<Node,Long>();
+		table = new Hashtable<Long,Long>();
 	}
 }

@@ -1,4 +1,4 @@
-package deccen.protocols;
+package deccen.controls;
 
 import peersim.core.Control;
 

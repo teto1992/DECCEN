@@ -1,4 +1,4 @@
-package deccen;
+package deccen.core;
 
 import peersim.cdsim.CDProtocol;
 import peersim.core.Linkable;

@@ -1,35 +1,45 @@
 
 ###### VARIABLES  #####
-VIEW 10
-SHUFFLE 5
-SIZE 10000
+SIZE 5
+DIAMETER 3
+CYCLES 10
 #######################
 
 ##### SIMULATION PARAMETER ####
 random.seed 12345678900
-simulation.cycles 1000
+simulation.cycles CYCLES
 
 network.size SIZE
 ##############################
 
-## PROTOCOL
+## PROTOCOLS
 
-protocol.closeness deccen.protocols.ClosenessCD
+protocol.lnk IdleProtocol
+protocol.count deccen.protocols.CountCD
+protocol.count.linkable lnk
+protocol.count.diameter DIAMETER
 
 
 ## INITIALIZER
 
 # Initializes the values
 init.initializer DeccenInitializer
+init.initializer.count count
 
-# initialise overlay 
-
-init.rnd WireKOut
-init.rnd.protocol count
-init.rnd.k 10
+# initialise overlay from file
+init.topology WireFromFile
+init.topology.undir true
+init.topology.protocol lnk
+init.topology.file example/example.txt
+# init.topology.file dolphins/out.dolphins
 
 
 ## CONTROLS
 # Prints statistics of the network
-control.observer deccen.protocols.DeccenObserver
-control.observer.protocol deccen.controls.DeccenObserver
+control.postman deccen.controls.PostMan
+control.postman.count count
+#control.observer deccen.protocols.DeccenObserver
+#control.observer.protocol deccen.controls.DeccenObserver
+
+
+include.control postman

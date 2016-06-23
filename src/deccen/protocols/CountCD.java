@@ -56,38 +56,33 @@ public class CountCD implements CDProtocol
 
 
 	public void nextCycle(Node n, int pid) {
-		Linkable linkable = (Linkable) n.getProtocol(FastConfig.getLinkable(pid));
 		long nodeId = n.getID();
 
 		if (first){
 			shortestPathsNumber.put(nodeId, (long) 1);
 			distances.put(nodeId, (long) 0);
-
+			
 			NOSPMessage nosp = new NOSPMessage(nodeId, 1);
 			toSend.add(nosp);
-
 			first = false;
 
 		} else {
 
-			while (!inbox.isEmpty()){
+			for (NOSPMessage m : inbox){
 
-				NOSPMessage m = inbox.getFirst();
 				long id = m.getIdentifier();
+				long weight = 0;
 
 				if (!shortestPathsNumber.containsKey(id)){ // check that is not a back-firing message
 
-					long weight = m.getWeight();
 					// sum all the weights for the newly discovered node
-					for (int k = 1; k < inbox.size(); k++){
+					for (int k = 0; k < inbox.size(); k++){
 
 						NOSPMessage tmp = inbox.get(k);
 
 						if (tmp.getIdentifier()==id){
 							weight+=tmp.getWeight();
 						}
-						
-						inbox.remove(tmp);
 
 					}
 
@@ -99,15 +94,13 @@ public class CountCD implements CDProtocol
 				    NOSPMessage msg = new NOSPMessage(id, weight);
 				    toSend.add(msg);
 
-
 				}
-				
-				inbox.removeFirst();
 
 			}
+			inbox.clear();
 			
-			System.out.println("dist "+nodeId + " " +distances);
-			//System.out.println("sp "+nodeId + " " +shortestPathsNumber);
+			//System.out.println("dist "+nodeId + " " +distances);
+			System.out.println("sp "+nodeId + " " +shortestPathsNumber);
 
 		}
 

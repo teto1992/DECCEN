@@ -13,7 +13,7 @@ import peersim.core.Linkable;
 import peersim.core.Node;
 import utils.Couple;
 
-public class ClosenessCD implements CDProtocol
+public class DeccenCD implements CDProtocol
 {
 
 	protected Hashtable<Long,Long> distances = new Hashtable<Long,Long>();
@@ -31,7 +31,7 @@ public class ClosenessCD implements CDProtocol
 	public double betweeness = 0.0;
 
 
-	public ClosenessCD(String prefix){	
+	public DeccenCD(String prefix){	
 	}
 
 	public Hashtable<Long,Long> getDistances(){
@@ -54,9 +54,9 @@ public class ClosenessCD implements CDProtocol
 	}
 
 	public Object clone() { 
-		ClosenessCD closeness = null;
+		DeccenCD closeness = null;
 		try {
-			closeness = (ClosenessCD) super.clone();
+			closeness = (DeccenCD) super.clone();
 			closeness.init();
 
 		} catch ( CloneNotSupportedException ex){}
@@ -101,7 +101,6 @@ public class ClosenessCD implements CDProtocol
 
 		}
 		NOSPinbox.clear();
-		System.out.println(nodeId + " " + shortestPathsNumber);
 
 	}
 
@@ -147,7 +146,6 @@ public class ClosenessCD implements CDProtocol
 
 			} 
 
-
 		}
 		reportInbox.clear();
 
@@ -188,7 +186,7 @@ public class ClosenessCD implements CDProtocol
 		for (NOSPMessage m : toSendNOSP){
 			for (int i = 0; i < linkable.degree(); i++){
 				Node peer = linkable.getNeighbor(i);
-				ClosenessCD neighbour = (ClosenessCD) peer.getProtocol(pid);
+				DeccenCD neighbour = (DeccenCD) peer.getProtocol(pid);
 				neighbour.NOSPinbox.add(m);
 			}
 
@@ -197,7 +195,7 @@ public class ClosenessCD implements CDProtocol
 		for (ReportMessage m : toSendReport){
 			for (int i = 0; i < linkable.degree(); i++){
 				Node peer = linkable.getNeighbor(i);
-				ClosenessCD neighbour = (ClosenessCD) peer.getProtocol(pid);
+				DeccenCD neighbour = (DeccenCD) peer.getProtocol(pid);
 				neighbour.reportInbox.add(m);
 			}
 

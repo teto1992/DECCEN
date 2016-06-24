@@ -1,6 +1,6 @@
 package deccen.controls;
 
-import deccen.protocols.ClosenessCD;
+import deccen.protocols.DeccenCD;
 import peersim.config.Configuration;
 import peersim.core.Control;
 import peersim.core.Network;
@@ -18,14 +18,14 @@ public class PostMan implements Control {
 	public boolean execute() {
 		for (int i = 0; i < Network.size(); i++){
 			Node n = Network.get(i);
-			ClosenessCD prot = (ClosenessCD) n.getProtocol(pid);
+			DeccenCD prot = (DeccenCD) n.getProtocol(pid);
 			prot.sendAll(n, pid);
 		}
 		
 		for (int i = 0; i < Network.size(); i++){
 			Node n = Network.get(i);
-			ClosenessCD prot = (ClosenessCD) n.getProtocol(pid);
-			System.out.println(i + " closeness " + prot.closeness+ " max dist " + prot.maxDistance + " stress " + prot.stress + " betweeness " + prot.betweeness);
+			DeccenCD prot = (DeccenCD) n.getProtocol(pid);
+			System.out.println(i + " closeness " + prot.closeness + " graph " + prot.maxDistance + " stress " + prot.stress + " betweeness " + prot.betweeness);
 
 		}
 		

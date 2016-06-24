@@ -1,8 +1,8 @@
 
 ###### VARIABLES  #####
-SIZE 5
-DIAMETER 3
-CYCLES 13
+SIZE 63
+DIAMETER 8
+CYCLES 20
 #######################
 
 ##### SIMULATION PARAMETER ####
@@ -15,7 +15,7 @@ network.size SIZE
 ## PROTOCOLS
 
 protocol.lnk IdleProtocol
-protocol.closeness deccen.protocols.ClosenessCD
+protocol.closeness deccen.protocols.DeccenCD
 protocol.closeness.linkable lnk
 protocol.closeness.diameter DIAMETER
 
@@ -30,8 +30,8 @@ init.initializer.count closeness
 init.topology WireFromFile
 init.topology.undir true
 init.topology.protocol lnk
-init.topology.file example/example.txt
-# init.topology.file dolphins/out.dolphins
+#init.topology.file example/example.txt
+init.topology.file dolphins/out.dolphins
 
 
 ## CONTROLS

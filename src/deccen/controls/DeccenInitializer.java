@@ -1,11 +1,7 @@
 package deccen.controls;
 
-import deccen.messages.NOSPMessage;
-import deccen.protocols.CountCD;
 import peersim.config.Configuration;
 import peersim.core.Control;
-import peersim.core.Network;
-import peersim.core.Node;
 
 public class DeccenInitializer implements Control
 {

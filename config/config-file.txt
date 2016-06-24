@@ -2,7 +2,7 @@
 ###### VARIABLES  #####
 SIZE 5
 DIAMETER 3
-CYCLES 10
+CYCLES 13
 #######################
 
 ##### SIMULATION PARAMETER ####
@@ -15,16 +15,16 @@ network.size SIZE
 ## PROTOCOLS
 
 protocol.lnk IdleProtocol
-protocol.count deccen.protocols.CountCD
-protocol.count.linkable lnk
-protocol.count.diameter DIAMETER
+protocol.closeness deccen.protocols.ClosenessCD
+protocol.closeness.linkable lnk
+protocol.closeness.diameter DIAMETER
 
 
 ## INITIALIZER
 
 # Initializes the values
 init.initializer DeccenInitializer
-init.initializer.count count
+init.initializer.count closeness
 
 # initialise overlay from file
 init.topology WireFromFile
@@ -37,7 +37,7 @@ init.topology.file example/example.txt
 ## CONTROLS
 # Prints statistics of the network
 control.postman deccen.controls.PostMan
-control.postman.count count
+control.postman.closeness closeness
 #control.observer deccen.protocols.DeccenObserver
 #control.observer.protocol deccen.controls.DeccenObserver
 

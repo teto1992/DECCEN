@@ -30,13 +30,15 @@ public class PostMan implements Control {
 		for (int i = 0; i < Network.size(); i++){
 			Node n = Network.get(i);
 			DeccenCD prot = (DeccenCD) n.getProtocol(pid);
+                        System.out.println(i + " stress: 1/" + ((int)(prot.getCentrality())));
 		}
                 
-                if (emptyBoxes==Network.size()){
+                if (emptyBoxes==Network.size() && CommonState.getIntTime() != 0){
                     System.out.println(CommonState.getTime()+"*********************OVER***********************");
                 }
 		
 		return false;
 	}
+        
 
 }

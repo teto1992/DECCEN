@@ -22,20 +22,21 @@ public class StressCentralityCD extends DeccenCD {
             Couple sigma = new Couple(t, s);
             long distance = m.getDistance();
 
-            if (!reports.contains(sigma)) {
+            if (!reports.contains(sigma)) { //has (s,t) been registered?
                 reports.add(new Couple(t, s));
-
                 if (s != v && t != v) {
                     if ((distances.get(s) + distances.get(t)) == distance) { // d(v,s) + d (v,t) = d(s,t)
                         //stress
                         centrality = centrality + shortestPathsNumber.get(s) * shortestPathsNumber.get(t);
-                        toSendReport.add(m);
                     }
-                }
+                    toSendReport.add(m);
+                } 
 
             }
         });
+
         reportInbox.clear();
+        System.out.println(v + " stress: " + centrality);
     }
 
 }

@@ -27,15 +27,14 @@ public class ClosenessCentralityCD extends DeccenCD {
 
                 if (sigma.contains(v)) {
                     //closeness
-                    centrality += distance;
-                    
+                    centrality += distance;     
                 } else {
                     toSendReport.add(m);
                 }
             }
         });
         reportInbox.clear();
-
+        System.out.println(v + " stress: 1/" + ((int)(centrality)));
     }
 
 }

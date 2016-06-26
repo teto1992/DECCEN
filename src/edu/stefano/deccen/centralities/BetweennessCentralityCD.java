@@ -38,6 +38,7 @@ public class BetweennessCentralityCD extends DeccenCD {
             }
         });
         reportInbox.clear();
+        System.out.println(v +  " betweenness: " + centrality);
     }
 
 }

@@ -2,7 +2,7 @@
 ###### VARIABLES  #####
 SIZE 5
 DIAMETER 8
-CYCLES 20
+CYCLES 10
 #######################
 
 ##### SIMULATION PARAMETER ####
@@ -15,8 +15,10 @@ network.size SIZE
 ## PROTOCOLS
 
 protocol.lnk IdleProtocol
-protocol.deccen DeccenCD
 protocol.deccen.linkable lnk
+
+#choose the desired Deccen protocol
+protocol.deccen ClosenessCentralityCD
 protocol.deccen.diameter DIAMETER
 
 
@@ -35,9 +37,9 @@ init.topology.file example/example.txt
 
 ## CONTROLS
 # Prints statistics of the network
-control.postman edu.stefano.p2p.deccen.PostMan
+control.postman edu.stefano.deccen.controls.PostMan
 control.postman.deccen deccen
 #control.observer DeccenObserver
 #control.observer.protocol DeccenObserver
 
-order.control postman
+#order.control postman

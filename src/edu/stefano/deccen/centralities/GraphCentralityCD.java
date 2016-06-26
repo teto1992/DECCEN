@@ -35,6 +35,7 @@ public class GraphCentralityCD extends DeccenCD {
             }
         });
         reportInbox.clear();
+        System.out.println(v + " stress: 1/" + centrality);
     }
 
 }

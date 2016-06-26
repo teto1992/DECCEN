@@ -22,7 +22,8 @@ public abstract class DeccenCD implements CDProtocol
 {
 	public HashMap<Long,Long> distances = new HashMap<>(); //for each nodeId, stores the length of the shortest path
 	public HashMap<Long,Long> shortestPathsNumber = new HashMap<>(); //for each nodeId, stores the number of shortest paths directed to it 
-	public LinkedList<NOSPMessage> toSendNOSP = new LinkedList<>(); // mailbox for outgoing NOSP messages
+	
+        public LinkedList<NOSPMessage> toSendNOSP = new LinkedList<>(); // mailbox for outgoing NOSP messages
 	protected LinkedList<ReportMessage> toSendReport = new LinkedList<>(); // mailbox for outgoing Report messages
 	protected LinkedList<NOSPMessage> NOSPinbox = new LinkedList<>(); // mailbox for incoming NOSP messages
 	protected LinkedList<ReportMessage> reportInbox = new LinkedList<>(); // mailbox for incoming Report messages
@@ -30,9 +31,8 @@ public abstract class DeccenCD implements CDProtocol
 	protected HashSet<Couple> reports = new HashSet<>(); //stores the couples of the already received Reports
 	protected boolean first = true; // indicates if it is the first cycle
         
-        // These variables store the centralities whilst they are computed.
+        // These variable stores the centrality whilst it is computed.
 	protected double centrality = 0;
-
 
 	public DeccenCD(String prefix){	
 	}
@@ -40,6 +40,10 @@ public abstract class DeccenCD implements CDProtocol
 	public HashMap<Long,Long> getDistances(){
 		return distances;
 	}
+        
+        public double getCentrality(){
+            return centrality;
+        }
 
 	public void reset(){
 		first = true;

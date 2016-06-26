@@ -1,6 +1,6 @@
 
 ###### VARIABLES  #####
-SIZE 63
+SIZE 5
 DIAMETER 8
 CYCLES 20
 #######################
@@ -22,16 +22,12 @@ protocol.closeness.diameter DIAMETER
 
 ## INITIALIZER
 
-# Initializes the values
-init.initializer DeccenInitializer
-init.initializer.count closeness
-
 # initialise overlay from file
 init.topology WireFromFile
 init.topology.undir true
 init.topology.protocol lnk
-#init.topology.file example/example.txt
-init.topology.file dolphins/out.dolphins
+init.topology.file example/example.txt
+#init.topology.file dolphins/out.dolphins
 
 
 ## CONTROLS
@@ -40,6 +36,5 @@ control.postman deccen.controls.PostMan
 control.postman.closeness closeness
 #control.observer deccen.protocols.DeccenObserver
 #control.observer.protocol deccen.controls.DeccenObserver
-
 
 include.control postman

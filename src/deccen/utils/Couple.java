@@ -1,4 +1,4 @@
-package utils;
+package deccen.utils;
 
 public class Couple implements Comparable {
 	private long first;

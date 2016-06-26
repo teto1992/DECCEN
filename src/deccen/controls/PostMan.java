@@ -26,8 +26,8 @@ public class PostMan implements Control {
                             emptyBoxes++;
                         }
                         
-                        System.out.println(i + " NOSP Box " + prot.NOSPinbox);
-                        System.out.println(i + " Report Box " + prot.reportInbox);
+//                        System.out.println(i + " NOSP Box " + prot.NOSPinbox);
+//                        System.out.println(i + " Report Box " + prot.reportInbox);
 		}
 		
 		for (int i = 0; i < Network.size(); i++){

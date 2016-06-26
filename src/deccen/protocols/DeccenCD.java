@@ -104,6 +104,7 @@ public class DeccenCD implements CDProtocol
                 }
             });
 		NOSPinbox.clear();
+                System.out.println(nodeId + " shortest paths "+ distances);
 
 	}
 
@@ -195,6 +196,7 @@ public class DeccenCD implements CDProtocol
 
 		toSendNOSP.clear();
 		toSendReport.clear();
+                
                 return true;
 	}
 

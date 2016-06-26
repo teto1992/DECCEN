@@ -2,6 +2,7 @@ package deccen.controls;
 
 import deccen.protocols.DeccenCD;
 import peersim.config.Configuration;
+import peersim.core.CommonState;
 import peersim.core.Control;
 import peersim.core.Network;
 import peersim.core.Node;
@@ -15,6 +16,7 @@ public class PostMan implements Control {
 		pid = Configuration.getPid(prefix+"."+PAR_PROT);
 	}
 
+        @Override
 	public boolean execute() {
             int emptyBoxes = 0;
 		for (int i = 0; i < Network.size(); i++){
@@ -23,6 +25,9 @@ public class PostMan implements Control {
 			if (!prot.sendAll(n, pid)){
                             emptyBoxes++;
                         }
+                        
+                        System.out.println(i + " NOSP Box " + prot.NOSPinbox);
+                        System.out.println(i + " Report Box " + prot.reportInbox);
 		}
 		
 		for (int i = 0; i < Network.size(); i++){
@@ -33,7 +38,7 @@ public class PostMan implements Control {
 		}
                 
                 if (emptyBoxes==Network.size()){
-                    System.out.println("*********************OVER***********************");
+                    System.out.println(CommonState.getTime()+"*********************OVER***********************");
                 }
 		
 		return false;

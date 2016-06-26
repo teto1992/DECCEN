@@ -20,10 +20,10 @@ import deccen.utils.Couple;
 public class DeccenCD implements CDProtocol
 {
 
-	protected HashMap<Long,Long> distances = new HashMap<>(); //for each nodeId, stores the length of the shortest path
-	protected HashMap<Long,Long> shortestPathsNumber = new HashMap<>(); //for each nodeId, stores the number of shortest paths directed to it 
-	protected LinkedList<NOSPMessage> toSendNOSP = new LinkedList<>(); // mailbox for outgoing NOSP messages
-	protected LinkedList<ReportMessage> toSendReport = new LinkedList<>(); // mailbox for outgoing Report messages
+	public HashMap<Long,Long> distances = new HashMap<>(); //for each nodeId, stores the length of the shortest path
+	public HashMap<Long,Long> shortestPathsNumber = new HashMap<>(); //for each nodeId, stores the number of shortest paths directed to it 
+	public LinkedList<NOSPMessage> toSendNOSP = new LinkedList<>(); // mailbox for outgoing NOSP messages
+	public LinkedList<ReportMessage> toSendReport = new LinkedList<>(); // mailbox for outgoing Report messages
 	public LinkedList<NOSPMessage> NOSPinbox = new LinkedList<>(); // mailbox for incoming NOSP messages
 	public LinkedList<ReportMessage> reportInbox = new LinkedList<>(); // mailbox for incoming Report messages
         
@@ -112,7 +112,7 @@ public class DeccenCD implements CDProtocol
 
 	private void reportPhase(long nodeId){
 
-            reportInbox.stream().forEach((m) -> {
+            reportInbox.stream().forEach((ReportMessage m) -> {
                 Couple sigma = new Couple(m.getT(), m.getS());
                 long s = m.getS();
                 long t = m.getT();
@@ -126,7 +126,7 @@ public class DeccenCD implements CDProtocol
                     if (s!=nodeId && t != nodeId)
                         if ((distances.get(s) + distances.get(t)) == distance ){ // d(v,s) + d (v,t) = d(s,t)
                             stress = stress + shortestPathsNumber.get(m.getS())*shortestPathsNumber.get(m.getT());
-                            //betweeness = betweeness + ((double)(shortestPathsNumber.get(m.getS())*shortestPathsNumber.get(m.getT()))/weight);
+                            betweeness = betweeness + ((double)(shortestPathsNumber.get(m.getS())*shortestPathsNumber.get(m.getT()))/weight);
                             toSendReport.add(m);
                             sent = true;
                         }
@@ -147,25 +147,18 @@ public class DeccenCD implements CDProtocol
 		reportInbox.clear();
 
 	}
+        
 
         @Override
 	public void nextCycle(Node n, int pid) {
 		long nodeId = n.getID();
+                if (!first){
+                    countPhase(nodeId);
+                    reportPhase(nodeId);
+                } else {
+                    first = !first;
+                }
 
-		if (first){
-
-			shortestPathsNumber.put(nodeId, (long) 1);
-			distances.put(nodeId, (long) 0);
-
-			NOSPMessage nosp = new NOSPMessage(nodeId, 1);
-			toSendNOSP.add(nosp);
-			first = false;
-
-		} else {
-			countPhase(nodeId);
-			if (!first)
-				reportPhase(nodeId);
-		}
 	}
 
 	/**

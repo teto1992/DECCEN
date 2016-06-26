@@ -34,7 +34,6 @@ public class ClosenessCentralityCD extends DeccenCD {
             }
         });
         reportInbox.clear();
-        System.out.println(v + " stress: 1/" + ((int)(centrality)));
     }
 
 }

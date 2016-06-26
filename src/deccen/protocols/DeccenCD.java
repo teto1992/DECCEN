@@ -88,9 +88,7 @@ public class DeccenCD implements CDProtocol
                         if (tmp.getIdentifier()==id){
                             weight+=tmp.getWeight();
                         }
-                        
-                    }
-                    
+                    }       
                     long dist = (long) CDState.getCycle();
                     // store the new entry
                     shortestPathsNumber.put(id, weight);
@@ -113,23 +111,30 @@ public class DeccenCD implements CDProtocol
 	private void reportPhase(long nodeId){
 
             reportInbox.stream().forEach((ReportMessage m) -> {
-                Couple sigma = new Couple(m.getT(), m.getS());
                 long s = m.getS();
                 long t = m.getT();
+                Couple sigma = new Couple(t, s);
+
                 long distance = m.getDistance();
                 long weight = m.getSigma();
                 long sp = m.getSigma();
                 boolean sent = false;
+                
                 if (!reports.contains(sigma)) {
                     reports.add(new Couple(m.getT(),m.getS()));
                     Long vs, vt;
+                    
+                    
                     if (s!=nodeId && t != nodeId)
                         if ((distances.get(s) + distances.get(t)) == distance ){ // d(v,s) + d (v,t) = d(s,t)
+                            //stress
                             stress = stress + shortestPathsNumber.get(m.getS())*shortestPathsNumber.get(m.getT());
+                            //betweeness
                             betweeness = betweeness + ((double)(shortestPathsNumber.get(m.getS())*shortestPathsNumber.get(m.getT()))/weight);
                             toSendReport.add(m);
                             sent = true;
                         }
+                    
                     if (sigma.contains(nodeId)){
                         //closeness
                         closeness += m.getDistance();

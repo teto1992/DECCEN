@@ -17,18 +17,19 @@ import peersim.core.Node;
  * @author Casa
  */
 public class DeccenInitializer implements Control {
-    	private static final String PAR_PROT = "deccen";
-	private final int pid;
-	
-	public DeccenInitializer(String prefix){
-		pid = Configuration.getPid(prefix+"."+PAR_PROT);
-	}
-        
+
+    private static final String PAR_PROT = "deccen";
+    private final int pid;
+
+    public DeccenInitializer(String prefix) {
+        pid = Configuration.getPid(prefix + "." + PAR_PROT);
+    }
+
     @Override
     public boolean execute() {
 
         int size = Network.size();
-        
+
         for (long i = 0; i < size; i++) {
             Node node = Network.get((int) i);
             DeccenCD deccen = (DeccenCD) node.getProtocol(pid);
@@ -41,7 +42,14 @@ public class DeccenInitializer implements Control {
 
         }
 
+        for (int i = 0; i < Network.size(); i++) {
+            Node n = Network.get(i);
+            DeccenCD prot = (DeccenCD) n.getProtocol(pid);
+            prot.sendAll(n, pid);
+
+        }
         return false;
     }
+    
 
 }

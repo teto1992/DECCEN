@@ -19,7 +19,6 @@ import deccen.utils.Couple;
 
 public class DeccenCD implements CDProtocol
 {
-
 	public HashMap<Long,Long> distances = new HashMap<>(); //for each nodeId, stores the length of the shortest path
 	public HashMap<Long,Long> shortestPathsNumber = new HashMap<>(); //for each nodeId, stores the number of shortest paths directed to it 
 	public LinkedList<NOSPMessage> toSendNOSP = new LinkedList<>(); // mailbox for outgoing NOSP messages
@@ -31,9 +30,9 @@ public class DeccenCD implements CDProtocol
 	private boolean first = true; // indicates if it is the first cycle
         
         // These variables store the centralities whilst they are computed.
-	public long closeness = 0;
-	public long maxDistance = 0;
-	public long stress = 0;
+	public double closeness = 0;
+	public double maxDistance = 0;
+	public double stress = 0;
 	public double betweeness = 0.0;
 
 
@@ -94,6 +93,7 @@ public class DeccenCD implements CDProtocol
                     shortestPathsNumber.put(id, weight);
                     // store the current cycle that equals the distance
                     distances.put(id, dist );
+                    
                     // post the new weight
                     NOSPMessage msg = new NOSPMessage(id, weight);
                     toSendNOSP.add(msg);
@@ -108,7 +108,7 @@ public class DeccenCD implements CDProtocol
 	}
 
 
-	private void reportPhase(long nodeId){
+	private void reportPhase(long v){
 
             reportInbox.stream().forEach((ReportMessage m) -> {
                 long s = m.getS();
@@ -122,20 +122,18 @@ public class DeccenCD implements CDProtocol
                 
                 if (!reports.contains(sigma)) {
                     reports.add(new Couple(m.getT(),m.getS()));
-                    Long vs, vt;
                     
-                    
-                    if (s!=nodeId && t != nodeId)
+                    if (s != v && t != v)
                         if ((distances.get(s) + distances.get(t)) == distance ){ // d(v,s) + d (v,t) = d(s,t)
                             //stress
                             stress = stress + shortestPathsNumber.get(m.getS())*shortestPathsNumber.get(m.getT());
                             //betweeness
-                            betweeness = betweeness + ((double)(shortestPathsNumber.get(m.getS())*shortestPathsNumber.get(m.getT()))/weight);
+                            betweeness = betweeness + (((double)(shortestPathsNumber.get(m.getS())*shortestPathsNumber.get(m.getT())))/weight);
                             toSendReport.add(m);
                             sent = true;
                         }
                     
-                    if (sigma.contains(nodeId)){
+                    if (sigma.contains(v)){
                         //closeness
                         closeness += m.getDistance();
                         //graph
@@ -163,7 +161,6 @@ public class DeccenCD implements CDProtocol
                 } else {
                     first = !first;
                 }
-
 	}
 
 	/**
@@ -171,7 +168,7 @@ public class DeccenCD implements CDProtocol
 	 * is called by the PostMan Control instance.
 	 * @param n current node
 	 * @param pid current protocol id
-     * @return 
+         * @return false if the post box is empty for both NOSP and Reports, true otherwise.
 	 */
 
 	public boolean sendAll(Node n, int pid){

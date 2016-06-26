@@ -9,6 +9,7 @@ public class Couple implements Comparable {
 		second = b;
 	}
 
+        @Override
 	public int compareTo(Object ip) {
 		int cmp = compare(first, ((Couple)ip).first);
 		if (cmp != 0) {
@@ -26,6 +27,7 @@ public class Couple implements Comparable {
 		return a == second;
 	}
 	
+        @Override
 	public String toString(){
 		return "(" + first + ", " + second + ")";
 	}

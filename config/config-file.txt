@@ -1,8 +1,8 @@
 
 ###### VARIABLES  #####
-SIZE 5
+SIZE 10
 DIAMETER 8
-CYCLES 10
+CYCLES 20
 #######################
 
 ##### SIMULATION PARAMETER ####
@@ -29,7 +29,7 @@ init.initializer.deccen closeness
 init.topology WireFromFile
 init.topology.undir true
 init.topology.protocol lnk
-init.topology.file example/example.txt
+init.topology.file example/example2.txt
 #init.topology.file dolphins/out.dolphins
 
 

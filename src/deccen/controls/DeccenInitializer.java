@@ -42,12 +42,6 @@ public class DeccenInitializer implements Control {
 
         }
 
-        for (int i = 0; i < Network.size(); i++) {
-            Node n = Network.get(i);
-            DeccenCD prot = (DeccenCD) n.getProtocol(pid);
-            prot.sendAll(n, pid);
-
-        }
         return false;
     }
     

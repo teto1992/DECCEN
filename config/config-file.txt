@@ -1,6 +1,6 @@
 
 ###### VARIABLES  #####
-SIZE 10
+SIZE 5
 DIAMETER 8
 CYCLES 20
 #######################
@@ -15,29 +15,29 @@ network.size SIZE
 ## PROTOCOLS
 
 protocol.lnk IdleProtocol
-protocol.closeness deccen.protocols.DeccenCD
-protocol.closeness.linkable lnk
-protocol.closeness.diameter DIAMETER
+protocol.deccen DeccenCD
+protocol.deccen.linkable lnk
+protocol.deccen.diameter DIAMETER
 
 
 ## INITIALIZER
 # Initializes the values
 init.initializer DeccenInitializer
-init.initializer.deccen closeness
+init.initializer.deccen deccen
 
 # initialise overlay from file
 init.topology WireFromFile
 init.topology.undir true
 init.topology.protocol lnk
-init.topology.file example/example2.txt
+init.topology.file example/example.txt
 #init.topology.file dolphins/out.dolphins
 
 
 ## CONTROLS
 # Prints statistics of the network
-control.postman deccen.controls.PostMan
-control.postman.closeness closeness
-#control.observer deccen.protocols.DeccenObserver
-#control.observer.protocol deccen.controls.DeccenObserver
+control.postman edu.stefano.p2p.deccen.PostMan
+control.postman.deccen deccen
+#control.observer DeccenObserver
+#control.observer.protocol DeccenObserver
 
 order.control postman

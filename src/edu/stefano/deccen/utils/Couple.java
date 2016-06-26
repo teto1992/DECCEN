@@ -1,5 +1,9 @@
-package deccen.utils;
+package edu.stefano.deccen.utils;
 
+/**
+ * It represents a couple of nodes.
+ * @author Stefano
+ */
 public class Couple implements Comparable {
 	private long first;
 	private long second;

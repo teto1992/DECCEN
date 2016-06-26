@@ -1,17 +1,17 @@
-package deccen.messages;
+package edu.stefano.deccen.messages;
 
 
 public class ReportMessage {
 	private long t; // the current node
 	private long s; // the source node
-	private long sigma; // the number of shortest paths between s and t
+	private long weight; // the number of shortest paths between s and t
 	private long distance; // the distance between s and t
 	
 	public ReportMessage(long t , long s, long sigma, long distance){
 		this.distance = distance;
 		this.s = s;
 		this.t = t;
-		this.sigma = sigma;
+		this.weight = sigma;
 				
 	}
 	
@@ -32,11 +32,11 @@ public class ReportMessage {
 	}
 	
 	public long getSigma(){
-		return sigma;
+		return weight;
 	}
 	
 	public void setSigma(long d){
-		sigma = d;
+		weight = d;
 	}
 
 	public long getDistance() {
@@ -48,7 +48,7 @@ public class ReportMessage {
 	}
 	
 	public String toString(){
-		return ("("+t+", "+s+") o = " + sigma + " dist = " + distance);
+		return ("("+t+", "+s+") o = " + weight + " dist = " + distance);
 	}
 	
 }

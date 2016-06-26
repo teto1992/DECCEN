@@ -1,4 +1,4 @@
-package deccen.messages;
+package edu.stefano.deccen.messages;
 
 public class NOSPMessage {
 	

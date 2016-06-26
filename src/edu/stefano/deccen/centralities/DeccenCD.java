@@ -1,39 +1,37 @@
-package deccen.protocols;
+package edu.stefano.deccen.centralities;
 
+import edu.stefano.deccen.utils.Couple;
+import edu.stefano.deccen.messages.NOSPMessage;
+import edu.stefano.deccen.messages.ReportMessage;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import deccen.messages.NOSPMessage;
-import deccen.messages.ReportMessage;
 import peersim.cdsim.CDProtocol;
 import peersim.cdsim.CDState;
 import peersim.config.FastConfig;
 import peersim.core.Linkable;
 import peersim.core.Node;
-import deccen.utils.Couple;
+
 
 /**
  * 
  * @author Stefano Forti
  */
 
-public class DeccenCD implements CDProtocol
+public abstract class DeccenCD implements CDProtocol
 {
 	public HashMap<Long,Long> distances = new HashMap<>(); //for each nodeId, stores the length of the shortest path
 	public HashMap<Long,Long> shortestPathsNumber = new HashMap<>(); //for each nodeId, stores the number of shortest paths directed to it 
 	public LinkedList<NOSPMessage> toSendNOSP = new LinkedList<>(); // mailbox for outgoing NOSP messages
-	public LinkedList<ReportMessage> toSendReport = new LinkedList<>(); // mailbox for outgoing Report messages
-	public LinkedList<NOSPMessage> NOSPinbox = new LinkedList<>(); // mailbox for incoming NOSP messages
-	public LinkedList<ReportMessage> reportInbox = new LinkedList<>(); // mailbox for incoming Report messages
+	protected LinkedList<ReportMessage> toSendReport = new LinkedList<>(); // mailbox for outgoing Report messages
+	protected LinkedList<NOSPMessage> NOSPinbox = new LinkedList<>(); // mailbox for incoming NOSP messages
+	protected LinkedList<ReportMessage> reportInbox = new LinkedList<>(); // mailbox for incoming Report messages
         
-	private HashSet<Couple> reports = new HashSet<>(); //stores the couples of the already received Reports
-	private boolean first = true; // indicates if it is the first cycle
+	protected HashSet<Couple> reports = new HashSet<>(); //stores the couples of the already received Reports
+	protected boolean first = true; // indicates if it is the first cycle
         
         // These variables store the centralities whilst they are computed.
-	public double closeness = 0;
-	public double maxDistance = 0;
-	public double stress = 0;
-	public double betweeness = 0.0;
+	protected double centrality = 0;
 
 
 	public DeccenCD(String prefix){	
@@ -52,10 +50,7 @@ public class DeccenCD implements CDProtocol
 		toSendReport = new LinkedList<>();
 		reportInbox = new LinkedList<>();
 		reports = new  HashSet<>();
-		maxDistance = 0;
-		closeness = 0;
-		stress = 0;
-		betweeness = 0;
+                centrality = 0;
 	}
 
         @Override
@@ -96,62 +91,18 @@ public class DeccenCD implements CDProtocol
                     
                     // post the new weight
                     NOSPMessage msg = new NOSPMessage(id, weight);
-                    toSendNOSP.add(msg);
-                    
+                    toSendNOSP.add(msg);            
                     ReportMessage rep = new ReportMessage(nodeId, id, weight, dist);
-                    
                     toSendReport.add(rep);
                 }
             });
 		NOSPinbox.clear();
-                System.out.println(nodeId + " shortest paths "+ distances);
-
 	}
 
 
-	private void reportPhase(long v){
+	abstract void reportPhase(long v);
 
-            reportInbox.stream().forEach((ReportMessage m) -> {
-                long s = m.getS();
-                long t = m.getT();
-                Couple sigma = new Couple(t, s);
 
-                long distance = m.getDistance();
-                long weight = m.getSigma();
-                long sp = m.getSigma();
-                boolean sent = false;
-                
-                if (!reports.contains(sigma)) {
-                    reports.add(new Couple(m.getT(),m.getS()));
-                    
-                    if (s != v && t != v)
-                        if ((distances.get(s) + distances.get(t)) == distance ){ // d(v,s) + d (v,t) = d(s,t)
-                            //stress
-                            stress = stress + shortestPathsNumber.get(m.getS())*shortestPathsNumber.get(m.getT());
-                            //betweeness
-                            betweeness = betweeness + (((double)(shortestPathsNumber.get(m.getS())*shortestPathsNumber.get(m.getT())))/weight);
-                            toSendReport.add(m);
-                            sent = true;
-                        }
-                    
-                    if (sigma.contains(v)){
-                        //closeness
-                        closeness += m.getDistance();
-                        //graph
-                        if (m.getDistance()>maxDistance){
-                            maxDistance = m.getDistance();
-                        }
-                        
-                    } else {
-                        if (!sent)
-                            toSendReport.add(m);
-                    }
-                }
-            });
-		reportInbox.clear();
-
-	}
-        
 
         @Override
 	public void nextCycle(Node n, int pid) {

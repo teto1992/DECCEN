@@ -1,4 +1,4 @@
-package deccen.controls;
+package edu.stefano.deccen.controls;
 
 import peersim.core.Control;
 

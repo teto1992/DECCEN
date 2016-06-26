@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import peersim.cdsim.CDProtocol;
 import peersim.cdsim.CDState;
 import peersim.config.FastConfig;
+import peersim.core.CommonState;
 import peersim.core.Linkable;
 import peersim.core.Node;
 
@@ -31,6 +32,8 @@ public abstract class DeccenCD implements CDProtocol
 	protected HashSet<Couple> reports = new HashSet<>(); //stores the couples of the already received Reports
 	protected boolean first = true; // indicates if it is the first cycle
         
+        long exchangedNOSP = 0;
+        long exchangedReports = 0;
         // These variable stores the centrality whilst it is computed.
 	protected double centrality = 0;
 
@@ -55,6 +58,8 @@ public abstract class DeccenCD implements CDProtocol
 		reportInbox = new LinkedList<>();
 		reports = new  HashSet<>();
                 centrality = 0;
+                exchangedNOSP = 0;
+                exchangedReports = 0;
 	}
 
         @Override
@@ -148,10 +153,10 @@ public abstract class DeccenCD implements CDProtocol
                         neighbour.reportInbox.add(m);
                     }
             });
-
+                exchangedNOSP += (linkable.degree() * toSendNOSP.size());
+                exchangedReports += (linkable.degree() * toSendReport.size());
 		toSendNOSP.clear();
 		toSendReport.clear();
-                
                 return true;
 	}
 

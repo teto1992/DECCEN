@@ -11,7 +11,7 @@ public class PostMan implements Control {
 	
 	private static final String PAR_PROT = "deccen";
 	private final int pid;
-	
+        
 	public PostMan(String prefix){
 		pid = Configuration.getPid(prefix+"."+PAR_PROT);
 	}
@@ -31,6 +31,7 @@ public class PostMan implements Control {
 			Node n = Network.get(i);
 			DeccenCD prot = (DeccenCD) n.getProtocol(pid);
                         System.out.println(i + " stress: 1/" + ((int)(prot.getCentrality())));
+                       
 		}
                 
                 if (emptyBoxes==Network.size() && CommonState.getIntTime() != 0){

@@ -19,7 +19,7 @@ import peersim.core.Node;
  * @author Stefano Forti
  */
 
-public abstract class DeccenCD implements CDProtocol
+public abstract class AbstractDeccenCD implements CDProtocol
 {
 	public HashMap<Long,Long> distances = new HashMap<>(); //for each nodeId, stores the length of the shortest path
 	public HashMap<Long,Long> shortestPathsNumber = new HashMap<>(); //for each nodeId, stores the number of shortest paths directed to it 
@@ -37,7 +37,7 @@ public abstract class DeccenCD implements CDProtocol
         // These variable stores the centrality whilst it is computed.
 	protected double centrality = 0;
 
-	public DeccenCD(String prefix){	
+	public AbstractDeccenCD(String prefix){	
 	}
 
 	public HashMap<Long,Long> getDistances(){
@@ -46,6 +46,14 @@ public abstract class DeccenCD implements CDProtocol
         
         public double getCentrality(){
             return centrality;
+        }
+        
+        public long getNOSPNumber(){
+            return exchangedNOSP;
+        }
+        
+        public long getReportsNumber(){
+            return exchangedReports;
         }
 
 	public void reset(){
@@ -64,9 +72,9 @@ public abstract class DeccenCD implements CDProtocol
 
         @Override
 	public Object clone() { 
-		DeccenCD deccen = null;
+		AbstractDeccenCD deccen = null;
 		try {
-			deccen = (DeccenCD) super.clone();
+			deccen = (AbstractDeccenCD) super.clone();
 			deccen.reset();
 
 		} catch ( CloneNotSupportedException ex){}
@@ -141,7 +149,7 @@ public abstract class DeccenCD implements CDProtocol
                 toSendNOSP.stream().forEach((m) -> {
                     for (int i = 0; i < linkable.degree(); i++){
                         Node peer = linkable.getNeighbor(i);
-                        DeccenCD neighbour = (DeccenCD) peer.getProtocol(pid);
+                        AbstractDeccenCD neighbour = (AbstractDeccenCD) peer.getProtocol(pid);
                         neighbour.NOSPinbox.add(m);
                     }
             });
@@ -149,7 +157,7 @@ public abstract class DeccenCD implements CDProtocol
                 toSendReport.stream().forEach((m) -> {
                     for (int i = 0; i < linkable.degree(); i++){
                         Node peer = linkable.getNeighbor(i);
-                        DeccenCD neighbour = (DeccenCD) peer.getProtocol(pid);
+                        AbstractDeccenCD neighbour = (AbstractDeccenCD) peer.getProtocol(pid);
                         neighbour.reportInbox.add(m);
                     }
             });

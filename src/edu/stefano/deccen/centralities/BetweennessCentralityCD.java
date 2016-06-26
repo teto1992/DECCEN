@@ -8,7 +8,7 @@ package edu.stefano.deccen.centralities;
 import edu.stefano.deccen.utils.Couple;
 import edu.stefano.deccen.messages.ReportMessage;
 
-public class BetweennessCentralityCD extends DeccenCD {
+public class BetweennessCentralityCD extends AbstractDeccenCD {
 
     public BetweennessCentralityCD(String prefix) {
         super(prefix);

@@ -18,7 +18,7 @@ protocol.lnk IdleProtocol
 protocol.deccen.linkable lnk
 
 #choose the desired Deccen protocol
-protocol.deccen ClosenessCentralityCD
+protocol.deccen BetweennessCentralityCD
 protocol.deccen.diameter DIAMETER
 
 
@@ -37,9 +37,10 @@ init.topology.file example/example2.txt
 
 ## CONTROLS
 # Prints statistics of the network
-control.postman edu.stefano.deccen.controls.PostMan
+control.postman edu.stefano.deccen.controls.PostManControl
 control.postman.deccen deccen
-#control.observer DeccenObserver
-#control.observer.protocol DeccenObserver
+control.observer DeccenObserver
+control.observer.deccen deccen
+control.observer.cycles CYCLES
 
-#order.control postman
+order.control postman observer

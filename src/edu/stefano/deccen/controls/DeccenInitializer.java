@@ -6,7 +6,7 @@
 package edu.stefano.deccen.controls;
 
 import edu.stefano.deccen.messages.NOSPMessage;
-import edu.stefano.deccen.centralities.DeccenCD;
+import edu.stefano.deccen.centralities.AbstractDeccenCD;
 import peersim.config.Configuration;
 import peersim.core.Control;
 import peersim.core.Network;
@@ -38,7 +38,7 @@ public class DeccenInitializer implements Control {
         
         for (long i = 0; i < size; i++) {
             Node node = Network.get((int) i);
-            DeccenCD deccen = (DeccenCD) node.getProtocol(pid);
+            AbstractDeccenCD deccen = (AbstractDeccenCD) node.getProtocol(pid);
 
             deccen.shortestPathsNumber.put(i, (long) 1);
             deccen.distances.put(i, (long) 0);
@@ -47,6 +47,7 @@ public class DeccenInitializer implements Control {
             deccen.toSendNOSP.add(nosp);
 
         }
+        
         return false;
     }
     

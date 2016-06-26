@@ -8,7 +8,7 @@ package edu.stefano.deccen.centralities;
 import edu.stefano.deccen.utils.Couple;
 import edu.stefano.deccen.messages.ReportMessage;
 
-public class StressCentralityCD extends DeccenCD {
+public class StressCentralityCD extends AbstractDeccenCD {
 
     public StressCentralityCD(String prefix) {
         super(prefix);

@@ -1,6 +1,6 @@
 package edu.stefano.deccen.messages;
 
-public class NOSPMessage {
+public final class NOSPMessage {
 	
 	private long identifier; // the source node
 	private long weight; // the number of shortest paths from the source to the currently sending node

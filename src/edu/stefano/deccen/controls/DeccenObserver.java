@@ -31,8 +31,9 @@ public class DeccenObserver implements Control {
                 AbstractDeccenCD prot = (AbstractDeccenCD) n.getProtocol(pid);
                 NOSP += prot.getNOSPNumber();
                 reports += prot.getReportsNumber();
-                System.out.println(i + " stress: 1/" + ((int) (prot.getCentrality())));
-
+                System.out.println(i + " stress: 1/" + ( prot.getCentrality()));
+                System.out.println("distances: " +prot.distances);
+                System.out.println("NOSP table: " +prot.shortestPathsNumber);
             }
 
             System.out.println("Exchanged NOSPS: " + NOSP);

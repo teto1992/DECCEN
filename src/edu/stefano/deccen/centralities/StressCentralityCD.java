@@ -22,7 +22,7 @@ public class StressCentralityCD extends AbstractDeccenCD {
             Couple sigma = new Couple(t, s);
             long distance = m.getDistance();
 
-            if (!reports.contains(sigma)) { //has (s,t) been registered?
+            if (!reports.contains(sigma) && distances.containsKey(t) && distances.containsKey(s)) { //has (s,t) been registered?
                 reports.add(new Couple(t, s));
                 if (s != v && t != v) {
                     if ((distances.get(s) + distances.get(t)) == distance) { // d(v,s) + d (v,t) = d(s,t)

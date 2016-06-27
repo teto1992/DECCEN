@@ -24,8 +24,8 @@ public abstract class AbstractDeccenCD implements CDProtocol {
 
     public LinkedList<NOSPMessage> toSendNOSP = new LinkedList<>(); // mailbox for outgoing NOSP messages
     protected LinkedList<ReportMessage> toSendReport = new LinkedList<>(); // mailbox for outgoing Report messages
-    protected LinkedList<NOSPMessage> NOSPinbox = new LinkedList<>(); // mailbox for incoming NOSP messages
-    protected LinkedList<ReportMessage> reportInbox = new LinkedList<>(); // mailbox for incoming Report messages
+    public LinkedList<NOSPMessage> NOSPinbox = new LinkedList<>(); // mailbox for incoming NOSP messages
+    public LinkedList<ReportMessage> reportInbox = new LinkedList<>(); // mailbox for incoming Report messages
 
     protected HashSet<Couple> reports = new HashSet<>(); //stores the couples of the already received Reports
     protected boolean first = true; // indicates if it is the first cycle
@@ -99,7 +99,7 @@ public abstract class AbstractDeccenCD implements CDProtocol {
                         weight += tmp.getWeight();
                     }
                 }
-                long dist = (long) CDState.getCycle();
+                long dist = (long) CDState.getCycle()+1;
                 // store the new entry
                 shortestPathsNumber.put(id, weight);
                 // store the current cycle that equals the distance
@@ -120,8 +120,9 @@ public abstract class AbstractDeccenCD implements CDProtocol {
     @Override
     public void nextCycle(Node n, int pid) {
         long nodeId = n.getID();
+        countPhase(nodeId);
         if (!first) {
-            countPhase(nodeId);
+
             reportPhase(nodeId);
         } else {
             first = !first;

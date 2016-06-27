@@ -1,7 +1,7 @@
 
 ###### VARIABLES  #####
-SIZE 9
-DIAMETER 5
+SIZE 5
+DIAMETER 3
 CYCLES DIAMETER + DIAMETER + 2
 #######################
 
@@ -31,7 +31,7 @@ init.initializer.deccen deccen
 init.topology WireFromFile
 init.topology.undir true
 init.topology.protocol lnk
-init.topology.file example/example2.txt
+init.topology.file example/example.txt
 #init.topology.file dolphins/out.dolphins
 
 

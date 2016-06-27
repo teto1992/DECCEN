@@ -9,7 +9,7 @@ import edu.stefano.deccen.utils.Couple;
 import edu.stefano.deccen.messages.ReportMessage;
 
 public class ClosenessCentralityCD extends AbstractDeccenCD {
-    
+
     public ClosenessCentralityCD(String prefix) {
         super(prefix);
     }
@@ -27,7 +27,7 @@ public class ClosenessCentralityCD extends AbstractDeccenCD {
 
                 if (sigma.contains(v)) {
                     //closeness
-                    centrality += distance;     
+                    centrality += distance;
                 } else {
                     toSendReport.add(m);
                 }

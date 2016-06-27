@@ -30,7 +30,7 @@ public class BetweennessCentralityCD extends AbstractDeccenCD {
                 if (s != v && t != v) {
                     double shortespathsVS = shortestPathsNumber.get(s);
                     double shortestpathsVT = shortestPathsNumber.get(t);
-                    if ((distances.get(s) + distances.get(t)) == distance) { 
+                    if ((distances.get(s) + distances.get(t)) == distance) {
                         centrality = centrality + ((shortespathsVS * shortestpathsVT) / weight);
                         toSendReport.add(m);
                     }

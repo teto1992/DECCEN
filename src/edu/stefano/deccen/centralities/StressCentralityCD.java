@@ -30,13 +30,13 @@ public class StressCentralityCD extends AbstractDeccenCD {
                         centrality = centrality + shortestPathsNumber.get(s) * shortestPathsNumber.get(t);
                     }
                     toSendReport.add(m);
-                } 
+                }
 
             }
         });
 
         reportInbox.clear();
-        
-                 }
+
+    }
 
 }

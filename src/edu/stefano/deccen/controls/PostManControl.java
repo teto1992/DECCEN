@@ -26,7 +26,7 @@ public class PostManControl implements Control {
                 emptyBoxes++;
             }
         }
-        
+
         if (emptyBoxes == Network.size() && CommonState.getIntTime() != 1) {
             System.out.println("No more messages to deliver!");
         }

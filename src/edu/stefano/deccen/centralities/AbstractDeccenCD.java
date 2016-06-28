@@ -23,15 +23,17 @@ public abstract class AbstractDeccenCD implements CDProtocol {
     public HashMap<Long, Long> shortestPathsNumber = new HashMap<>(); //for each nodeId, stores the number of shortest paths directed to it 
 
     public LinkedList<NOSPMessage> toSendNOSP = new LinkedList<>(); // mailbox for outgoing NOSP messages
-    protected LinkedList<ReportMessage> toSendReport = new LinkedList<>(); // mailbox for outgoing Report messages
+    public LinkedList<ReportMessage> toSendReport = new LinkedList<>(); // mailbox for outgoing Report messages
     public LinkedList<NOSPMessage> NOSPinbox = new LinkedList<>(); // mailbox for incoming NOSP messages
     public LinkedList<ReportMessage> reportInbox = new LinkedList<>(); // mailbox for incoming Report messages
 
-    protected HashSet<Couple> reports = new HashSet<>(); //stores the couples of the already received Reports
+    public HashSet<Couple> reports = new HashSet<>(); //stores the couples of the already received Reports
     protected boolean first = true; // indicates if it is the first cycle
+    protected boolean converged =false;
 
     long exchangedNOSP = 0;
     long exchangedReports = 0;
+    long sigReports = 0;
     // These variable stores the centrality whilst it is computed.
     protected double centrality = 0;
 
@@ -53,6 +55,10 @@ public abstract class AbstractDeccenCD implements CDProtocol {
     public long getReportsNumber() {
         return exchangedReports;
     }
+    
+    public long getSignificantReportNumber(){
+        return this.sigReports;
+    }
 
     public void reset() {
         first = true;
@@ -66,6 +72,8 @@ public abstract class AbstractDeccenCD implements CDProtocol {
         centrality = 0;
         exchangedNOSP = 0;
         exchangedReports = 0;
+        sigReports = 0;
+        converged = false;
     }
 
     @Override
@@ -83,13 +91,12 @@ public abstract class AbstractDeccenCD implements CDProtocol {
     }
 
     private void countPhase(long nodeId) {
-
         NOSPinbox.stream().map((m) -> m.getIdentifier()).forEach((id) -> {
 
             long weight = 0; //summing all
+            // check that is not a back-firing message
+            
             if (!shortestPathsNumber.containsKey(id)) {
-                // check that is not a back-firing message
-
                 // sum all the weights for the newly discovered node
                 for (int k = 0; k < NOSPinbox.size(); k++) {
 
@@ -99,15 +106,18 @@ public abstract class AbstractDeccenCD implements CDProtocol {
                         weight += tmp.getWeight();
                     }
                 }
+                
                 long dist = (long) CDState.getCycle()+1;
                 // store the new entry
                 shortestPathsNumber.put(id, weight);
-                // store the current cycle that equals the distance
+                // store the current cycle that equals the distance of the shortest path
                 distances.put(id, dist);
 
                 // post the new weight
                 NOSPMessage msg = new NOSPMessage(id, weight);
                 toSendNOSP.add(msg);
+                
+                //generate report message for the newly discovered node
                 ReportMessage rep = new ReportMessage(nodeId, id, weight, dist);
                 toSendReport.add(rep);
             }
@@ -120,13 +130,15 @@ public abstract class AbstractDeccenCD implements CDProtocol {
     @Override
     public void nextCycle(Node n, int pid) {
         long nodeId = n.getID();
-        countPhase(nodeId);
-        if (!first) {
-
+        
+        if (!first){
+            countPhase(nodeId);
             reportPhase(nodeId);
         } else {
-            first = !first;
+            countPhase(nodeId);
+            first = false;
         }
+
     }
 
     /**
@@ -140,13 +152,14 @@ public abstract class AbstractDeccenCD implements CDProtocol {
      */
     public boolean sendAll(Node n, int pid) {
         Linkable linkable = (Linkable) n.getProtocol(FastConfig.getLinkable(pid));
+        int degree = linkable.degree();
 
         if (toSendNOSP.isEmpty() && toSendReport.isEmpty()) {
             return false;
         }
 
         toSendNOSP.stream().forEach((m) -> {
-            for (int i = 0; i < linkable.degree(); i++) {
+            for (int i = 0; i < degree; i++) {
                 Node peer = linkable.getNeighbor(i);
                 AbstractDeccenCD neighbour = (AbstractDeccenCD) peer.getProtocol(pid);
                 neighbour.NOSPinbox.add(m);
@@ -154,16 +167,18 @@ public abstract class AbstractDeccenCD implements CDProtocol {
         });
 
         toSendReport.stream().forEach((m) -> {
-            for (int i = 0; i < linkable.degree(); i++) {
+            for (int i = 0; i < degree; i++) {
                 Node peer = linkable.getNeighbor(i);
                 AbstractDeccenCD neighbour = (AbstractDeccenCD) peer.getProtocol(pid);
                 neighbour.reportInbox.add(m);
             }
         });
-        exchangedNOSP += (linkable.degree() * toSendNOSP.size());
-        exchangedReports += (linkable.degree() * toSendReport.size());
+        
+        exchangedNOSP += (degree * toSendNOSP.size());
+        exchangedReports += (degree * toSendReport.size());
         toSendNOSP.clear();
         toSendReport.clear();
+        
         return true;
     }
 

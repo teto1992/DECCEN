@@ -12,36 +12,34 @@ public class PostManControl implements Control {
 
     private static final String PAR_PROT = "deccen";
     private final int pid;
-    private final ArrayList<Integer> convergedNodes;
+
+    double[] centralities;
 
     public PostManControl(String prefix) {
         pid = Configuration.getPid(prefix + "." + PAR_PROT);
-        convergedNodes = new ArrayList<>();
+        centralities = new double[Network.size()];
     }
 
     @Override
     public boolean execute() {
+        int size = Network.size();
+        
         int emptyBoxes = 0;
-        boolean converged = true;
         
-        for (int i = 0; i < Network.size(); i++) {
+        for (int i = 0; i < size; i++) {
             Node n = Network.get(i);
+  
             AbstractDeccenCD prot = (AbstractDeccenCD) n.getProtocol(pid);
-            if (converged = !prot.sendAll(n, pid)) {
+  
+            if (!prot.sendAll(n, pid)){
                 emptyBoxes++;
-                if (CommonState.getTime() != 1 && !convergedNodes.contains(i)){
-                    System.out.println("Node " + i + " converged at cycle " + CommonState.getIntTime() + "!");
-                    convergedNodes.add(i);
-                }
             }
-            
+   
         }
         
+        if (emptyBoxes==size)
+            System.out.println(CommonState.getTime()+" There are no more messages to send!");
 
-
-        if (emptyBoxes == Network.size() && CommonState.getIntTime() != 1) {
-            System.out.println("No more messages to deliver!");
-        }
 
         return false;
     }

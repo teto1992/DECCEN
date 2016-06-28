@@ -1,6 +1,6 @@
 ###### VARIABLES  #####
-SIZE 9
-DIAMETER 5
+SIZE 63
+DIAMETER 8
 CYCLES DIAMETER + DIAMETER + 2
 #######################
 
@@ -17,7 +17,7 @@ protocol.lnk IdleProtocol
 protocol.deccen.linkable lnk
 
 #choose the desired Deccen protocol
-protocol.deccen ClosenessCentralityCD
+protocol.deccen BetweennessCentralityCD
 protocol.deccen.diameter DIAMETER
 
 
@@ -30,8 +30,8 @@ init.initializer.deccen deccen
 init.topology WireFromFile
 init.topology.undir true
 init.topology.protocol lnk
-init.topology.file example/example2.txt
-#init.topology.file dolphins/out.dolphins
+#init.topology.file example/example.txt
+init.topology.file dolphins/out.dolphins
 
 
 ## CONTROLS

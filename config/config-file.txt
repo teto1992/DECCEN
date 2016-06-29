@@ -1,7 +1,8 @@
 ###### VARIABLES  #####
-SIZE 63
-DIAMETER 8
-CYCLES DIAMETER + DIAMETER + 2
+SIZE 9
+CSTEP SIZE - 1
+DIAMETER 5
+CYCLES DIAMETER + DIAMETER + 3
 #######################
 
 ##### SIMULATION PARAMETER ####
@@ -12,14 +13,18 @@ network.size SIZE
 ##############################
 
 ## PROTOCOLS
+#Daemon protocol
+
+#protocol.daemon DaemonProtocol
+#protocol.daemon.cstep CSTEP
+#protocol.daemon.control postman observer
 
 protocol.lnk IdleProtocol
 protocol.deccen.linkable lnk
 
 #choose the desired Deccen protocol
-protocol.deccen BetweennessCentralityCD
+protocol.deccen StressCentralityCD
 protocol.deccen.diameter DIAMETER
-
 
 ## INITIALIZER
 # Initializes the values
@@ -30,17 +35,22 @@ init.initializer.deccen deccen
 init.topology WireFromFile
 init.topology.undir true
 init.topology.protocol lnk
-#init.topology.file example/example.txt
-init.topology.file dolphins/out.dolphins
+init.topology.file example/example2.txt
+#init.topology.file dolphins/out.dolphins
 
 
 ## CONTROLS
 # Prints statistics of the network
-control.postman edu.stefano.deccen.controls.PostManControl
+control.postman PostManControl
 control.postman.deccen deccen
+
 control.observer DeccenObserver
 control.observer.deccen deccen
 control.observer.cycles CYCLES
 
 order.control postman observer
-order.protocol lnk deccen
+
+order.protocol lnk deccen 
+
+
+

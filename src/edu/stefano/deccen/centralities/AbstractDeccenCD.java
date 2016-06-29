@@ -19,8 +19,8 @@ import peersim.core.Node;
  */
 public abstract class AbstractDeccenCD implements CDProtocol {
 
-    public HashMap<Long, Long> distances = new HashMap<>(); //for each nodeId, stores the length of the shortest path
-    public HashMap<Long, Long> shortestPathsNumber = new HashMap<>(); //for each nodeId, stores the number of shortest paths directed to it 
+    public HashMap<Long, Long> distances = new HashMap<>(); //for each source node, stores the length of the shortest path
+    public HashMap<Long, Long> shortestPathsNumber = new HashMap<>(); //for each each source node, stores the number of shortest paths directed to it 
 
     public LinkedList<NOSPMessage> toSendNOSP = new LinkedList<>(); // mailbox for outgoing NOSP messages
     public LinkedList<ReportMessage> toSendReport = new LinkedList<>(); // mailbox for outgoing Report messages
@@ -29,7 +29,7 @@ public abstract class AbstractDeccenCD implements CDProtocol {
 
     public HashSet<Couple> reports = new HashSet<>(); //stores the couples of the already received Reports
     protected boolean first = true; // indicates if it is the first cycle
-    protected boolean converged =false;
+    protected boolean converged = false;
 
     long exchangedNOSP = 0;
     long exchangedReports = 0;
@@ -55,8 +55,8 @@ public abstract class AbstractDeccenCD implements CDProtocol {
     public long getReportsNumber() {
         return exchangedReports;
     }
-    
-    public long getSignificantReportNumber(){
+
+    public long getSignificantReportNumber() {
         return this.sigReports;
     }
 
@@ -90,39 +90,48 @@ public abstract class AbstractDeccenCD implements CDProtocol {
 
     }
 
-    private void countPhase(long nodeId) {
-        NOSPinbox.stream().map((m) -> m.getIdentifier()).forEach((id) -> {
+    private void countPhase(long v) {
 
-            long weight = 0; //summing all
-            // check that is not a back-firing message
-            
-            if (!shortestPathsNumber.containsKey(id)) {
-                // sum all the weights for the newly discovered node
-                for (int k = 0; k < NOSPinbox.size(); k++) {
+//        if (first) {
+//            NOSPMessage msg = new NOSPMessage(v, 1);
+//            toSendNOSP.add(msg);
+//            shortestPathsNumber.put(v, (long) 1);
+//            distances.put(v, (long) 0);
+//        } else {
 
-                    NOSPMessage tmp = NOSPinbox.get(k);
+            NOSPinbox.stream().map((m) -> m.getIdentifier()).forEach((s) -> {
 
-                    if (tmp.getIdentifier() == id) {
-                        weight += tmp.getWeight();
+                long weight = 0; //summing all
+                // check that is not a back-firing message
+
+                if (!shortestPathsNumber.containsKey(s)) { // is it a backfiring msg?
+
+                    // sum all the weights for the newly discovered node
+                    for (int k = 0; k < NOSPinbox.size(); k++) {
+                        NOSPMessage tmp = NOSPinbox.get(k);
+
+                        if (tmp.getIdentifier() == s) {
+                            weight += tmp.getWeight();
+                        }
                     }
-                }
-                
-                long dist = (long) CDState.getCycle()+1;
-                // store the new entry
-                shortestPathsNumber.put(id, weight);
-                // store the current cycle that equals the distance of the shortest path
-                distances.put(id, dist);
 
-                // post the new weight
-                NOSPMessage msg = new NOSPMessage(id, weight);
-                toSendNOSP.add(msg);
-                
-                //generate report message for the newly discovered node
-                ReportMessage rep = new ReportMessage(nodeId, id, weight, dist);
-                toSendReport.add(rep);
-            }
-        });
-        NOSPinbox.clear();
+                    long dist = (long) CDState.getCycle()+1;
+                    // store the new entry
+                    shortestPathsNumber.put(s, weight);
+                    // store the current cycle that equals the distance of the shortest path
+                    distances.put(s, dist);
+
+                    // post the new weight
+                    NOSPMessage msg = new NOSPMessage(s, weight);
+                    toSendNOSP.add(msg);
+
+                    //generate report message for the newly discovered node
+                    ReportMessage rep = new ReportMessage(v, s, weight, dist);
+                    toSendReport.add(rep);
+                }
+            });
+            NOSPinbox.clear();
+//        }
     }
 
     abstract void reportPhase(long v);
@@ -131,13 +140,12 @@ public abstract class AbstractDeccenCD implements CDProtocol {
     public void nextCycle(Node n, int pid) {
         long nodeId = n.getID();
         
-        if (!first){
+//        if (!first) {
             countPhase(nodeId);
             reportPhase(nodeId);
-        } else {
-            countPhase(nodeId);
-            first = false;
-        }
+//        } else {
+//            first = false;
+//        }
 
     }
 
@@ -153,6 +161,8 @@ public abstract class AbstractDeccenCD implements CDProtocol {
     public boolean sendAll(Node n, int pid) {
         Linkable linkable = (Linkable) n.getProtocol(FastConfig.getLinkable(pid));
         int degree = linkable.degree();
+        
+        //System.out.println("SendAll " + CDState.getCycle());
 
         if (toSendNOSP.isEmpty() && toSendReport.isEmpty()) {
             return false;
@@ -163,6 +173,7 @@ public abstract class AbstractDeccenCD implements CDProtocol {
                 Node peer = linkable.getNeighbor(i);
                 AbstractDeccenCD neighbour = (AbstractDeccenCD) peer.getProtocol(pid);
                 neighbour.NOSPinbox.add(m);
+                //System.out.println("SendAll NOSP " + CDState.getCycle() + " "+ m);
             }
         });
 
@@ -173,12 +184,12 @@ public abstract class AbstractDeccenCD implements CDProtocol {
                 neighbour.reportInbox.add(m);
             }
         });
-        
+
         exchangedNOSP += (degree * toSendNOSP.size());
         exchangedReports += (degree * toSendReport.size());
         toSendNOSP.clear();
         toSendReport.clear();
-        
+
         return true;
     }
 

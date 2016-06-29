@@ -2,6 +2,7 @@ package edu.stefano.deccen.controls;
 
 import edu.stefano.deccen.centralities.AbstractDeccenCD;
 import java.util.ArrayList;
+import peersim.cdsim.CDState;
 import peersim.config.Configuration;
 import peersim.core.CommonState;
 import peersim.core.Control;
@@ -26,7 +27,7 @@ public class DeccenObserver implements Control {
 
     @Override
     public boolean execute() {
-
+//        if (CDState.getCycleT() != 0) {
         if (CommonState.getTime() == cycles - 1) {
             System.out.println("***Final Stats***");
             for (int i = 0; i < Network.size(); i++) {
@@ -44,6 +45,7 @@ public class DeccenObserver implements Control {
             System.out.println("Exchanged total: " + (NOSP + reports));
 
         } else {
+
             long cycleNOSP = 0, cycleReports = 0;
             for (int i = 0; i < Network.size(); i++) {
                 boolean countPhaseFinished = false;
@@ -60,11 +62,12 @@ public class DeccenObserver implements Control {
 //                    convergedNodes.add(i);
 //                }
             }
-            
+
             System.out.println("Cycle " + CommonState.getTime() + " Exchanged NOSPS: " + cycleNOSP);
             System.out.println("Cycle " + CommonState.getTime() + " Exchanged Reports: " + cycleReports);
             System.out.println("Cycle " + CommonState.getTime() + " Exchanged Total: " + (cycleReports + cycleNOSP));
 
+//            }
         }
         return false;
     }

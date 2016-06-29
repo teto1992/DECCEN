@@ -97,6 +97,7 @@ public Object clone() {
 public void nextCycle( Node node, int protocolID ) {
 
 	if( CDState.getCycleT() % step != 0 ) return;
+        System.out.println(CDState.getCycleT() + "I'm the daemon!");
 	for(int j=0; j<controls.length; ++j) controls[j].execute();
 }
 

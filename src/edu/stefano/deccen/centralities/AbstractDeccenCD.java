@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import peersim.cdsim.CDProtocol;
 import peersim.cdsim.CDState;
 import peersim.config.FastConfig;
-import peersim.core.CommonState;
 import peersim.core.Linkable;
 import peersim.core.Node;
 
@@ -92,30 +91,26 @@ public abstract class AbstractDeccenCD implements CDProtocol {
 
     private void countPhase(long v) {
 
-//        if (first) {
-//            NOSPMessage msg = new NOSPMessage(v, 1);
-//            toSendNOSP.add(msg);
-//            shortestPathsNumber.put(v, (long) 1);
-//            distances.put(v, (long) 0);
-//        } else {
-
+        if (first) {
+            NOSPMessage msg = new NOSPMessage(v, 1);
+            toSendNOSP.add(msg);
+            shortestPathsNumber.put(v, (long) 1);
+            distances.put(v, (long) 0);
+        } else {
+            
             NOSPinbox.stream().map((m) -> m.getIdentifier()).forEach((s) -> {
-
-                long weight = 0; //summing all
                 // check that is not a back-firing message
-
                 if (!shortestPathsNumber.containsKey(s)) { // is it a backfiring msg?
-
+                    long weight = 0; //summing all
                     // sum all the weights for the newly discovered node
                     for (int k = 0; k < NOSPinbox.size(); k++) {
                         NOSPMessage tmp = NOSPinbox.get(k);
-
                         if (tmp.getIdentifier() == s) {
                             weight += tmp.getWeight();
                         }
                     }
 
-                    long dist = (long) CDState.getCycle()+1;
+                    long dist = (long) CDState.getCycle();
                     // store the new entry
                     shortestPathsNumber.put(s, weight);
                     // store the current cycle that equals the distance of the shortest path
@@ -131,7 +126,7 @@ public abstract class AbstractDeccenCD implements CDProtocol {
                 }
             });
             NOSPinbox.clear();
-//        }
+        }
     }
 
     abstract void reportPhase(long v);
@@ -139,13 +134,15 @@ public abstract class AbstractDeccenCD implements CDProtocol {
     @Override
     public void nextCycle(Node n, int pid) {
         long nodeId = n.getID();
-        
-//        if (!first) {
-            countPhase(nodeId);
-            reportPhase(nodeId);
-//        } else {
-//            first = false;
-//        }
+ 
+            if (first){
+                countPhase(nodeId);
+                first = false;
+            } else{
+                countPhase(nodeId);
+                reportPhase(nodeId);
+            }
+                
 
     }
 

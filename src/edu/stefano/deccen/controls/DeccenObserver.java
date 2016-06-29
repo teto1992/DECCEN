@@ -27,7 +27,7 @@ public class DeccenObserver implements Control {
 
     @Override
     public boolean execute() {
-//        if (CDState.getCycleT() != 0) {
+        if (CDState.getCycleT() != 0) {
         if (CommonState.getTime() == cycles - 1) {
             System.out.println("***Final Stats***");
             for (int i = 0; i < Network.size(); i++) {
@@ -67,7 +67,7 @@ public class DeccenObserver implements Control {
             System.out.println("Cycle " + CommonState.getTime() + " Exchanged Reports: " + cycleReports);
             System.out.println("Cycle " + CommonState.getTime() + " Exchanged Total: " + (cycleReports + cycleNOSP));
 
-//            }
+            }
         }
         return false;
     }

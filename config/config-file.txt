@@ -1,12 +1,11 @@
 ###### VARIABLES  #####
-SIZE 9
+SIZE 5
 CSTEP SIZE - 1
-DIAMETER 5
-CYCLES DIAMETER + DIAMETER + 3
+DIAMETER 3
+CYCLES DIAMETER + DIAMETER + 2
 #######################
 
 ##### SIMULATION PARAMETER ####
-random.seed 12345678900
 simulation.cycles CYCLES
 
 network.size SIZE
@@ -15,9 +14,9 @@ network.size SIZE
 ## PROTOCOLS
 #Daemon protocol
 
-#protocol.daemon DaemonProtocol
-#protocol.daemon.cstep CSTEP
-#protocol.daemon.control postman observer
+protocol.daemon DaemonProtocol
+protocol.daemon.cstep CSTEP
+protocol.daemon.control postman observer
 
 protocol.lnk IdleProtocol
 protocol.deccen.linkable lnk
@@ -28,14 +27,14 @@ protocol.deccen.diameter DIAMETER
 
 ## INITIALIZER
 # Initializes the values
-init.initializer DeccenInitializer
-init.initializer.deccen deccen
+#init.initializer DeccenInitializer
+#init.initializer.deccen deccen
 
 # initialise overlay from file
 init.topology WireFromFile
 init.topology.undir true
 init.topology.protocol lnk
-init.topology.file example/example2.txt
+init.topology.file example/example.txt
 #init.topology.file dolphins/out.dolphins
 
 
@@ -50,7 +49,7 @@ control.observer.cycles CYCLES
 
 order.control postman observer
 
-order.protocol lnk deccen 
+order.protocol lnk deccen daemon 
 
 
 

@@ -22,7 +22,8 @@ public class PostManControl implements Control {
 
     @Override
     public boolean execute() {
-//        if (CDState.getCycleT() != 0) {
+        if (CDState.getCycleT() != 0) {
+            System.out.println("Hi! I'm the PostMan at " + CDState.getCycle() + " " + CDState.getCycleT());
             
             int size = Network.size();
 
@@ -43,7 +44,7 @@ public class PostManControl implements Control {
                 System.out.println(CommonState.getTime() + " There are no more messages to send!");
             }
 
-//        }
+        }
         return false;
 
     }

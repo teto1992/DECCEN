@@ -18,7 +18,7 @@ public class StressCentralityCD extends AbstractDeccenCD {
     @Override
     void reportPhase(long v) {
         sigReports = 0;
- 
+        
         reportInbox.stream().forEach((ReportMessage m) -> {
             long s = m.getS();
             long t = m.getT();
@@ -33,17 +33,17 @@ public class StressCentralityCD extends AbstractDeccenCD {
                 if (s != v && t != v) { // v != s != t
                     if ((distances.get(s) + distances.get(t)) == distance) { // d(v,s) + d (v,t) = d(s,t)
                         centrality = centrality + shortestPathsNumber.get(s) * shortestPathsNumber.get(t);
-                        
-                    }
+                        toSendReport.add(m);
+                    } 
                     
                 }
-                toSendReport.add(m);
+                //toSendReport.add(m);
 
             }
             
             
         });
-
+        
         reportInbox.clear();
 
     }

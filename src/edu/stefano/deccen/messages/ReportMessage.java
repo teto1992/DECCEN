@@ -48,7 +48,8 @@ public class ReportMessage {
     }
 
     public String toString() {
-        return ("(" + t + ", " + s + ") o = " + weight + " dist = " + distance);
+        return ("(" + t + ", " + s  + " dist = " + distance);
+        //+ ") o = " + weight
     }
 
 }

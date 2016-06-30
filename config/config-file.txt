@@ -1,14 +1,12 @@
 ###### VARIABLES  #####
-SIZE 9
+SIZE 5
 CSTEP SIZE - 1
-DIAMETER 5
-CYCLES DIAMETER + DIAMETER + 3
+DIAMETER 2
+CYCLES DIAMETER + DIAMETER + 2
 #######################
 
 ##### SIMULATION PARAMETER ####
-random.seed 12345678900
 simulation.cycles CYCLES
-
 network.size SIZE
 ##############################
 
@@ -35,7 +33,7 @@ init.initializer.deccen deccen
 init.topology WireFromFile
 init.topology.undir true
 init.topology.protocol lnk
-init.topology.file example/example2.txt
+init.topology.file example/reportgraph.txt
 #init.topology.file dolphins/out.dolphins
 
 

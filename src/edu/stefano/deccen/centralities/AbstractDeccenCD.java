@@ -128,9 +128,11 @@ public abstract class AbstractDeccenCD implements CDProtocol {
                     //generate report message for the newly discovered node
                     ReportMessage rep = new ReportMessage(v, s, weight, dist);
                     toSendReport.add(rep);
+                    reports.add(new Couple(v, s));
                 }
             });
             NOSPinbox.clear();
+            System.out.println(CDState.getCycle()+" Node " + v + " toSendNOSPs " + toSendNOSP);
 //        }
     }
 
@@ -139,6 +141,7 @@ public abstract class AbstractDeccenCD implements CDProtocol {
     @Override
     public void nextCycle(Node n, int pid) {
         long nodeId = n.getID();
+        
         
 //        if (!first) {
             countPhase(nodeId);

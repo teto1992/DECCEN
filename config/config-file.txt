@@ -1,7 +1,7 @@
 ###### VARIABLES  #####
 SIZE 5
 CSTEP SIZE - 1
-DIAMETER 3
+DIAMETER 2
 CYCLES DIAMETER + DIAMETER + 2
 #######################
 
@@ -34,7 +34,7 @@ protocol.deccen.diameter DIAMETER
 init.topology WireFromFile
 init.topology.undir true
 init.topology.protocol lnk
-init.topology.file example/example.txt
+init.topology.file example/reportgraph.txt
 #init.topology.file dolphins/out.dolphins
 
 

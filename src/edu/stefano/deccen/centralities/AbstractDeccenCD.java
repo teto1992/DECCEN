@@ -32,7 +32,6 @@ public abstract class AbstractDeccenCD implements CDProtocol {
 
     long exchangedNOSP = 0;
     long exchangedReports = 0;
-    long sigReports = 0;
     // These variable stores the centrality whilst it is computed.
     protected double centrality = 0;
 
@@ -55,10 +54,6 @@ public abstract class AbstractDeccenCD implements CDProtocol {
         return exchangedReports;
     }
 
-    public long getSignificantReportNumber() {
-        return this.sigReports;
-    }
-
     public void reset() {
         first = true;
         distances = new HashMap<>();
@@ -71,7 +66,6 @@ public abstract class AbstractDeccenCD implements CDProtocol {
         centrality = 0;
         exchangedNOSP = 0;
         exchangedReports = 0;
-        sigReports = 0;
         converged = false;
     }
 
@@ -127,7 +121,6 @@ public abstract class AbstractDeccenCD implements CDProtocol {
                 }
             });
             NOSPinbox.clear();
-            System.out.println(CDState.getCycle() + "  Node " + v + " toSendNOSPs " + toSendNOSP);
         }
     }
 
@@ -136,7 +129,6 @@ public abstract class AbstractDeccenCD implements CDProtocol {
     @Override
     public void nextCycle(Node n, int pid) {
         long nodeId = n.getID();
- 
             if (first){
                 countPhase(nodeId);
                 first = false;
@@ -144,8 +136,6 @@ public abstract class AbstractDeccenCD implements CDProtocol {
                 countPhase(nodeId);
                 reportPhase(nodeId);
             }
-                
-
     }
 
     /**
@@ -160,8 +150,6 @@ public abstract class AbstractDeccenCD implements CDProtocol {
     public boolean sendAll(Node n, int pid) {
         Linkable linkable = (Linkable) n.getProtocol(FastConfig.getLinkable(pid));
         int degree = linkable.degree();
-        
-        //System.out.println("SendAll " + CDState.getCycle());
 
         if (toSendNOSP.isEmpty() && toSendReport.isEmpty()) {
             return false;
@@ -172,7 +160,6 @@ public abstract class AbstractDeccenCD implements CDProtocol {
                 Node peer = linkable.getNeighbor(i);
                 AbstractDeccenCD neighbour = (AbstractDeccenCD) peer.getProtocol(pid);
                 neighbour.NOSPinbox.add(m);
-                //System.out.println("SendAll NOSP " + CDState.getCycle() + " "+ m);
             }
         });
 
@@ -184,11 +171,10 @@ public abstract class AbstractDeccenCD implements CDProtocol {
             }
         });
 
-        exchangedNOSP += (degree * toSendNOSP.size());
-        exchangedReports += (degree * toSendReport.size());
+        exchangedNOSP = (degree * toSendNOSP.size());
+        exchangedReports = (degree * toSendReport.size());
         toSendNOSP.clear();
         toSendReport.clear();
-
         return true;
     }
 

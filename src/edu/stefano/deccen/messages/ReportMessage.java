@@ -48,7 +48,7 @@ public class ReportMessage {
     }
 
     public String toString() {
-        return ("R[" + t + "," + s + "," + distance+"]");
+        return ("R[" + t + "," + s + "," + distance+ ", " + weight+"]");
     }
 
 }

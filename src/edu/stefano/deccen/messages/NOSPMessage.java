@@ -30,7 +30,7 @@ public final class NOSPMessage {
     }
 
     public String toString() {
-        return ("[" + identifier + ", " + weight + "]");
+        return ("N[" + identifier + ", " + weight + "]");
     }
 
 }

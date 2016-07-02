@@ -7,8 +7,6 @@ package edu.stefano.deccen.centralities;
 
 import edu.stefano.deccen.utils.Couple;
 import edu.stefano.deccen.messages.ReportMessage;
-import peersim.cdsim.CDState;
-import peersim.core.CommonState;
 
 public class StressCentralityCD extends AbstractDeccenCD {
 
@@ -18,8 +16,6 @@ public class StressCentralityCD extends AbstractDeccenCD {
 
     @Override
     void reportPhase(long v) {
-        sigReports = 0;
-        
         reportInbox.stream().forEach((ReportMessage m) -> {
             long s = m.getS();
             long t = m.getT();
@@ -29,21 +25,14 @@ public class StressCentralityCD extends AbstractDeccenCD {
             if (!reports.contains(sigma)) { //has (s,t) been received?
                 
                 reports.add(new Couple(s, t)); // (s,t) received
-                sigReports++;
                 //update stress centrality
                 if(distances.get(s)!= null && distances.get(t) != null)
                     if (s != v && t != v && (distances.get(s) + distances.get(t)) == distance) { // v != s != t
                             centrality = centrality + shortestPathsNumber.get(s) * shortestPathsNumber.get(t);
                     }
                 toSendReport.add(m);
-
             }
- 
         });
-        
-        System.out.println(CDState.getCycle() + "  Node " + v + " toSendReports " + toSendReport);
-        System.out.println(CDState.getCycle() + "  Node " + v + " centrality " + centrality);
-        System.out.println(reports.size());
         reportInbox.clear();
 
     }

@@ -1,0 +1,57 @@
+###### VARIABLES  #####
+SIZE 5
+CSTEP SIZE - 1
+DIAMETER 2
+CYCLES DIAMETER + DIAMETER + 2
+#######################
+
+##### SIMULATION PARAMETER ####
+simulation.cycles CYCLES
+
+network.size SIZE
+##############################
+
+## PROTOCOLS
+#Daemon protocol
+
+protocol.daemon DaemonProtocol
+protocol.daemon.cstep CSTEP
+
+protocol.lnk IdleProtocol
+protocol.deccen.linkable lnk
+
+#choose the desired Deccen protocol
+protocol.deccen StressCentralityCD
+protocol.deccen.diameter DIAMETER
+
+## INITIALIZER
+# Initializes the values
+#init.initializer DeccenInitializer
+#init.initializer.deccen deccen
+
+# initialise overlay from file
+init.topology WireFromFile
+init.topology.undir true
+init.topology.protocol lnk
+init.topology.file example/reportgraph.txt
+#init.topology.file dolphins/out.dolphins
+
+
+## CONTROLS
+# Prints statistics of the network
+control.postman PostManControl
+control.observer DeccenObserver
+order.control postman observer
+
+#DAEMON CONTROLS AND PARAMETERS
+protocol.daemon.control.postman postman
+protocol.daemon.control.postman.deccen deccen
+protocol.daemon.control.observer observer
+protocol.daemon.control.observer.deccen deccen
+protocol.daemon.control.observer.cycles CYCLES
+
+#PROTOCOLS ORDER
+order.protocol lnk deccen daemon 
+
+
+

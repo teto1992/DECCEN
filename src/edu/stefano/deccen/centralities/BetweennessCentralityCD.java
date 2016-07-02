@@ -41,4 +41,9 @@ public class BetweennessCentralityCD extends AbstractDeccenCD {
         reportInbox.clear();
     }
 
+    @Override
+    public double getCentrality() {
+        return centrality;
+    }
+
 }

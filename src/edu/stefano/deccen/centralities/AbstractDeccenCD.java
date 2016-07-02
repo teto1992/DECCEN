@@ -42,9 +42,7 @@ public abstract class AbstractDeccenCD implements CDProtocol {
         return distances;
     }
 
-    public double getCentrality() {
-        return centrality;
-    }
+    public abstract double getCentrality() ;
 
     public long getNOSPNumber() {
         return exchangedNOSP;

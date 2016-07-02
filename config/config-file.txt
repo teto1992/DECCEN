@@ -1,7 +1,13 @@
+# dolphins.txt 63 nodes, diameter 8
+# paper.txt 5 nodes, diameter 3
+# nvidia.txt 9 nodes, diameter 5
+# lesmis.txt 78 nodes, diameter 5 
+
 ###### VARIABLES  #####
-SIZE 63
+SIZE 5
+DIAMETER 3
+#######################
 CSTEP SIZE - 1
-DIAMETER 8
 CYCLES DIAMETER + DIAMETER + 2
 #######################
 
@@ -13,23 +19,20 @@ network.size SIZE
 
 ## PROTOCOLS
 #Daemon protocol
-
 protocol.daemon DaemonProtocol
 protocol.daemon.cstep CSTEP
-
 protocol.lnk IdleProtocol
 protocol.deccen.linkable lnk
 
 #choose the desired Deccen protocol
-protocol.deccen StressCentralityCD
+protocol.deccen GraphCentralityCD
 protocol.deccen.diameter DIAMETER
 
 # initialise overlay from file
 init.topology WireFromFile
 init.topology.undir true
 init.topology.protocol lnk
-#init.topology.file example/reportgraph.txt
-init.topology.file dolphins/out.dolphins
+init.topology.file test/paper.txt
 
 
 ## CONTROLS

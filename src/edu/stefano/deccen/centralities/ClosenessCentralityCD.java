@@ -7,6 +7,7 @@ package edu.stefano.deccen.centralities;
 
 import edu.stefano.deccen.utils.Couple;
 import edu.stefano.deccen.messages.ReportMessage;
+import peersim.core.Network;
 
 public class ClosenessCentralityCD extends AbstractDeccenCD {
 
@@ -34,6 +35,11 @@ public class ClosenessCentralityCD extends AbstractDeccenCD {
             }
         });
         reportInbox.clear();
+    }
+
+    @Override
+    public double getCentrality() {
+        return centrality/(Network.size()-1);
     }
 
 }

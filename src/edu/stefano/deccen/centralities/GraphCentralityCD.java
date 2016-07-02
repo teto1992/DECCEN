@@ -37,4 +37,9 @@ public class GraphCentralityCD extends AbstractDeccenCD {
         reportInbox.clear();
     }
 
+    @Override
+    public double getCentrality() {
+        return 1/centrality;
+    }
+
 }

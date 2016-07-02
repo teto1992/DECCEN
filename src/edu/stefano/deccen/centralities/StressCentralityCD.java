@@ -37,4 +37,9 @@ public class StressCentralityCD extends AbstractDeccenCD {
 
     }
 
+    @Override
+    public double getCentrality() {
+        return centrality;
+    }
+
 }

@@ -4,8 +4,8 @@
 # lesmis.txt 78 nodes, diameter 5 
 
 ###### VARIABLES  #####
-SIZE 5
-DIAMETER 3
+SIZE 63
+DIAMETER 8
 #######################
 CSTEP SIZE - 1
 CYCLES DIAMETER + DIAMETER + 2
@@ -13,7 +13,6 @@ CYCLES DIAMETER + DIAMETER + 2
 
 ##### SIMULATION PARAMETER ####
 simulation.cycles CYCLES
-
 network.size SIZE
 ##############################
 
@@ -25,14 +24,16 @@ protocol.lnk IdleProtocol
 protocol.deccen.linkable lnk
 
 #choose the desired Deccen protocol
-protocol.deccen GraphCentralityCD
+protocol.deccen StressCentralityCD
 protocol.deccen.diameter DIAMETER
 
 # initialise overlay from file
 init.topology WireFromFile
 init.topology.undir true
 init.topology.protocol lnk
-init.topology.file test/paper.txt
+init.topology.file dataset/dolphins.txt
+
+init.initializer DeccenInitialiser
 
 
 ## CONTROLS
@@ -42,7 +43,6 @@ protocol.daemon.control.a PostManControl
 protocol.daemon.control.a.deccen deccen
 protocol.daemon.control.b DeccenObserver
 protocol.daemon.control.b.deccen deccen
-protocol.daemon.control.b.cycles CYCLES
 order.protocol lnk deccen daemon 
 
 

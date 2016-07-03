@@ -50,5 +50,9 @@ public class ReportMessage {
     public String toString() {
         return ("R[" + t + "," + s + "," + distance+ ", " + weight+"]");
     }
+    
+    public boolean contains(long v){
+        return s == v || t == v;
+    }
 
 }

@@ -7,6 +7,7 @@ package edu.stefano.deccen.centralities;
 
 import edu.stefano.deccen.utils.Couple;
 import edu.stefano.deccen.messages.ReportMessage;
+import peersim.cdsim.CDState;
 
 public class GraphCentralityCD extends AbstractDeccenCD {
 
@@ -23,11 +24,12 @@ public class GraphCentralityCD extends AbstractDeccenCD {
             long distance = m.getDistance();
 
             if (!reports.contains(sigma)) {
-                reports.add(new Couple(t, s));
+                reports.add(sigma);
 
-                if (sigma.contains(v)) {
+                if (m.contains(v)) {
                     if (distance > centrality) {
                         centrality = distance;
+                        lastUpdate = CDState.getCycle();
                     }
                 } else {
                     toSendReport.add(m);
@@ -39,7 +41,7 @@ public class GraphCentralityCD extends AbstractDeccenCD {
 
     @Override
     public double getCentrality() {
-        return 1/centrality;
+        return (1 / centrality);
     }
 
 }

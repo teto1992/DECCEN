@@ -7,6 +7,7 @@ package edu.stefano.deccen.centralities;
 
 import edu.stefano.deccen.utils.Couple;
 import edu.stefano.deccen.messages.ReportMessage;
+import peersim.cdsim.CDState;
 
 public class BetweennessCentralityCD extends AbstractDeccenCD {
 
@@ -31,10 +32,11 @@ public class BetweennessCentralityCD extends AbstractDeccenCD {
                     double shortespathsVS = shortestPathsNumber.get(s);
                     double shortestpathsVT = shortestPathsNumber.get(t);
                     if ((distances.get(s) + distances.get(t)) == distance) {
-                        centrality = centrality + ((shortespathsVS * shortestpathsVT) / weight); 
+                        lastUpdate = CDState.getCycle();
+                        centrality = centrality + ((shortespathsVS * shortestpathsVT) / weight);
                     }
                 }
-                
+
                 toSendReport.add(m);
             }
         });

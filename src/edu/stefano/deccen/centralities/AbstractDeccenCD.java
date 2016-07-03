@@ -18,20 +18,21 @@ import peersim.core.Node;
  */
 public abstract class AbstractDeccenCD implements CDProtocol {
 
-    public HashMap<Long, Long> distances = new HashMap<>(); //for each source node, stores the length of the shortest path
-    public HashMap<Long, Long> shortestPathsNumber = new HashMap<>(); //for each each source node, stores the number of shortest paths directed to it 
+    protected HashMap<Long, Long> distances = new HashMap<>(); //for each source node, stores the length of the shortest path
+    protected HashMap<Long, Long> shortestPathsNumber = new HashMap<>(); //for each each source node, stores the number of shortest paths directed to it 
 
-    public LinkedList<NOSPMessage> toSendNOSP = new LinkedList<>(); // mailbox for outgoing NOSP messages
-    public LinkedList<ReportMessage> toSendReport = new LinkedList<>(); // mailbox for outgoing Report messages
-    public LinkedList<NOSPMessage> NOSPinbox = new LinkedList<>(); // mailbox for incoming NOSP messages
-    public LinkedList<ReportMessage> reportInbox = new LinkedList<>(); // mailbox for incoming Report messages
+    protected LinkedList<NOSPMessage> toSendNOSP = new LinkedList<>(); // mailbox for outgoing NOSP messages
+    protected LinkedList<ReportMessage> toSendReport = new LinkedList<>(); // mailbox for outgoing Report messages
+    protected LinkedList<NOSPMessage> NOSPinbox = new LinkedList<>(); // mailbox for incoming NOSP messages
+    protected LinkedList<ReportMessage> reportInbox = new LinkedList<>(); // mailbox for incoming Report messages
 
-    public HashSet<Couple> reports = new HashSet<>(); //stores the couples of the already received Reports
+    protected HashSet<Couple> reports = new HashSet<>(); //stores the couples of the already received Reports
     protected boolean first = true; // indicates if it is the first cycle
     protected boolean converged = false;
 
     long exchangedNOSP = 0;
     long exchangedReports = 0;
+    int lastUpdate = 0;
     // These variable stores the centrality whilst it is computed.
     protected double centrality = 0;
 
@@ -51,6 +52,10 @@ public abstract class AbstractDeccenCD implements CDProtocol {
     public long getReportsNumber() {
         return exchangedReports;
     }
+    
+    public int getLastUpdate(){
+        return lastUpdate;
+    }
 
     public void reset() {
         first = true;
@@ -65,6 +70,7 @@ public abstract class AbstractDeccenCD implements CDProtocol {
         exchangedNOSP = 0;
         exchangedReports = 0;
         converged = false;
+        lastUpdate = 0;
     }
 
     @Override
@@ -118,6 +124,7 @@ public abstract class AbstractDeccenCD implements CDProtocol {
                     reports.add(new Couple(v,s));
                 }
             });
+              
             NOSPinbox.clear();
         }
     }
@@ -127,6 +134,7 @@ public abstract class AbstractDeccenCD implements CDProtocol {
     @Override
     public void nextCycle(Node n, int pid) {
         long nodeId = n.getID();
+        
             if (first){
                 countPhase(nodeId);
                 first = false;

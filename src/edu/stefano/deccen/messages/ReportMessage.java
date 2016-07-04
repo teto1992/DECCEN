@@ -1,5 +1,14 @@
+/**
+ * Stefano Forti - 481183
+ */
 package edu.stefano.deccen.messages;
 
+/**
+ * Implements Report messages from DECCEN. With respect to the original, both
+ * number of shortest paths and distances are carried for simulation purposes.
+ *
+ * @author stefano
+ */
 public class ReportMessage {
 
     private long t; // the current node
@@ -47,11 +56,12 @@ public class ReportMessage {
         this.distance = distance;
     }
 
+    @Override
     public String toString() {
-        return ("R[" + t + "," + s + "," + distance+ ", " + weight+"]");
+        return ("R[" + t + "," + s + "," + distance + ", " + weight + "]");
     }
-    
-    public boolean contains(long v){
+
+    public boolean contains(long v) {
         return s == v || t == v;
     }
 

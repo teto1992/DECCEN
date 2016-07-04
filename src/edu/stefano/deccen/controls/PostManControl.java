@@ -1,3 +1,6 @@
+/**
+ * Stefano Forti - 481183
+ */
 package edu.stefano.deccen.controls;
 
 import edu.stefano.deccen.centralities.AbstractDeccenCD;
@@ -9,11 +12,16 @@ import peersim.core.Control;
 import peersim.core.Network;
 import peersim.core.Node;
 
+/**
+ * At each cycle it it responsible for delivering outgoing messages to all
+ * neighbours of a node.
+ */
 public class PostManControl implements Control {
 
     private static final String PAR_PROT = "deccen";
     private final int pid;
-    private HashSet<Integer> convergedNodes;
+    private HashSet<Integer> emptyNodes;
+    // keeps the nodes that stopped sending stuff 
     int emptyBoxes;
     int size;
 
@@ -22,7 +30,7 @@ public class PostManControl implements Control {
     public PostManControl(String prefix) {
         pid = Configuration.getPid(prefix + "." + PAR_PROT);
         centralities = new double[Network.size()];
-        convergedNodes = new HashSet<>();
+        emptyNodes = new HashSet<>();
         emptyBoxes = 0;
         size = Network.size();
     }
@@ -36,15 +44,15 @@ public class PostManControl implements Control {
 
                 AbstractDeccenCD prot = (AbstractDeccenCD) n.getProtocol(pid);
 
-                if (!prot.sendAll(n, pid) && !convergedNodes.contains(i)) {
+                if (!prot.sendAll(n, pid) && !emptyNodes.contains(i)) {
                     emptyBoxes++;
-                    convergedNodes.add(i);
-                    System.out.println(CDState.getCycle() + " Node " + i + " converged.");
+                    emptyNodes.add(i);
                 }
             }
         }
         if (emptyBoxes == size) {
-            System.out.println(CommonState.getTime() + " There are no more messages to send!");
+            System.out.println(CommonState.getTime() + " There are no more "
+                    + "messages to deliver!");
         }
         return false;
 

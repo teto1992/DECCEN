@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Stefano Forti - 481183
  */
 package edu.stefano.deccen.centralities;
 
@@ -40,7 +38,7 @@ public class ClosenessCentralityCD extends AbstractDeccenCD {
 
     @Override
     public double getCentrality() {
-        return centrality/(Network.size()-1);
+        return centrality / (Network.size() - 1);
     }
 
 }

@@ -1,9 +1,18 @@
+/**
+ * Stefano Forti - 481183
+ */
 package edu.stefano.deccen.messages;
 
+/**
+ * Implements NOSP messages from DECCEN algorithm.
+ *
+ * @author stefano
+ */
 public final class NOSPMessage {
 
     private long identifier; // the source node
-    private long weight; // the number of shortest paths from the source to the currently sending node
+    private long weight;
+// the number of shortest paths from the source to the currently sending node
 
     public NOSPMessage() {
     }
@@ -29,6 +38,7 @@ public final class NOSPMessage {
         weight = w;
     }
 
+    @Override
     public String toString() {
         return ("N[" + identifier + ", " + weight + "]");
     }

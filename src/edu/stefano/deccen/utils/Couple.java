@@ -1,3 +1,6 @@
+/**
+ * Stefano Forti - 481183
+ */
 package edu.stefano.deccen.utils;
 
 /**
@@ -7,8 +10,8 @@ package edu.stefano.deccen.utils;
  */
 public class Couple implements Comparable {
 
-    private long first;
-    private long second;
+    private final long first;
+    private final long second;
 
     public Couple(long a, long b) {
         first = a;
@@ -29,6 +32,13 @@ public class Couple implements Comparable {
         return (a < b ? -1 : (a == b ? 0 : 1));
     }
 
+    /**
+     * Checks if the target equals a. It is used by Closeness Centrality
+     * algorithm.
+     *
+     * @param a
+     * @return
+     */
     public boolean contains(long a) {
         return a == second;
     }

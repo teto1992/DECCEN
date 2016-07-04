@@ -1,15 +1,16 @@
+# Stefano Forti - 481183
 # dolphins.txt 63 nodes, diameter 8
 # paper.txt 5 nodes, diameter 3
 # nvidia.txt 9 nodes, diameter 5
 # lesmis.txt 78 nodes, diameter 5 
 
-###### VARIABLES  #####
+###### VARIABLES TO SET  #####
 SIZE 63
 DIAMETER 8
-#######################
+##############################
 CSTEP SIZE - 1
 CYCLES DIAMETER + DIAMETER + 2
-#######################
+##############################
 
 ##### SIMULATION PARAMETER ####
 simulation.cycles CYCLES
@@ -23,8 +24,10 @@ protocol.daemon.cstep CSTEP
 protocol.lnk IdleProtocol
 protocol.deccen.linkable lnk
 
-#choose the desired Deccen protocol
+###### CHOOSE THE DESIRED PROTOCOL  #####
 protocol.deccen StressCentralityCD
+#########################################
+
 protocol.deccen.diameter DIAMETER
 
 # initialise overlay from file
@@ -34,7 +37,6 @@ init.topology.protocol lnk
 init.topology.file dataset/dolphins.txt
 
 init.initializer DeccenInitialiser
-
 
 ## CONTROLS
 # Prints statistics of the network

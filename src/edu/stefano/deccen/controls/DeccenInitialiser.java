@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Stefano Forti - 481183
  */
 package edu.stefano.deccen.controls;
 
@@ -23,9 +21,8 @@ public class DeccenInitialiser implements Control {
     }
 
     /**
-     * It sets up the NOSP table and the distances table for each node v with
-     * (v, 1) and (v, 0) respectively. It posts the message (v,1) to be sent
-     * later by the PostMan Control.
+     * It sets up the files needed later by the Observer Control. Deletes
+     * everything from previous experiments.
      *
      * @return false
      */
@@ -35,8 +32,8 @@ public class DeccenInitialiser implements Control {
         File file2 = new File("logcentrality.txt");
         File file3 = new File("logmessagespercycle.txt");
         File file4 = new File("lastUpdate.txt");
-        File file5 = new File("result.txt"); 
-        
+        File file5 = new File("result.txt");
+
         try {
             Files.deleteIfExists(file1.toPath());
             Files.deleteIfExists(file2.toPath());
@@ -47,11 +44,12 @@ public class DeccenInitialiser implements Control {
             file2.createNewFile();
             file3.createNewFile();
             file4.createNewFile();
-            file5.createNewFile();            
+            file5.createNewFile();
         } catch (IOException ex) {
-            Logger.getLogger(DeccenInitialiser.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DeccenInitialiser.class.getName()).log(Level.SEVERE,
+                    null, ex);
         }
-        
+
         return false;
     }
 

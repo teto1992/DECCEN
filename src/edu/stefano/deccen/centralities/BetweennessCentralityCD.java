@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Stefano Forti - 481183
  */
 package edu.stefano.deccen.centralities;
 
@@ -33,7 +31,8 @@ public class BetweennessCentralityCD extends AbstractDeccenCD {
                     double shortestpathsVT = shortestPathsNumber.get(t);
                     if ((distances.get(s) + distances.get(t)) == distance) {
                         lastUpdate = CDState.getCycle();
-                        centrality = centrality + ((shortespathsVS * shortestpathsVT) / weight);
+                        centrality = centrality
+                                + ((shortespathsVS * shortestpathsVT) / weight);
                     }
                 }
 

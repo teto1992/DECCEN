@@ -1,7 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * Stefano Forti - 481183
  */
 package edu.stefano.deccen.centralities;
 
@@ -27,8 +25,11 @@ public class StressCentralityCD extends AbstractDeccenCD {
                 reports.add(new Couple(t, s)); // (s,t) received
                 //update stress centrality
                 if (distances.get(s) != null && distances.get(t) != null) {
-                    if (s != v && t != v && (distances.get(s) + distances.get(t)) == distance) { // v != s != t
-                        centrality = centrality + shortestPathsNumber.get(s) * shortestPathsNumber.get(t);
+                    if (s != v && t != v
+                            && (distances.get(s) + distances.get(t)) == distance) {
+                        centrality = centrality
+                                + shortestPathsNumber.get(s)
+                                * shortestPathsNumber.get(t);
                         lastUpdate = CDState.getCycle();
                     }
                 }

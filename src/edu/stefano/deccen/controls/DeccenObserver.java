@@ -1,16 +1,13 @@
+/**
+ * Stefano Forti - 481183
+ */
 package edu.stefano.deccen.controls;
 
 import edu.stefano.deccen.centralities.AbstractDeccenCD;
-import edu.stefano.deccen.centralities.BetweennessCentralityCD;
-import edu.stefano.deccen.centralities.ClosenessCentralityCD;
-import edu.stefano.deccen.centralities.StressCentralityCD;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import peersim.cdsim.CDState;
@@ -20,6 +17,9 @@ import peersim.core.Control;
 import peersim.core.Network;
 import peersim.core.Node;
 
+/**
+ * Prints the results and the stats of the execution on some files.
+ */
 public class DeccenObserver implements Control {
 
     private static final String PAR_PROT = "deccen";
@@ -34,12 +34,13 @@ public class DeccenObserver implements Control {
 
     @Override
     public boolean execute() {
+        //do not execute at the beginning of a cycle
+        if (CDState.getCycleT() != 0) {
 
-        if (CDState.getCycleT() != 0) { // do not execute at the beginning of a cycle
             long size = Network.size();
-            long cycleNOSP = 0, cycleReports = 0, centr = 0; //sum up the NOSP, the Reports and the centralities for a cycle
-            HashMap<Integer,Integer> lastUpdateHist = new HashMap<>();
-            
+            long cycleNOSP = 0, cycleReports = 0, centr = 0;
+            //sum up the NOSP, the Reports and the centralities for a cycle
+
             for (int i = 0; i < size; i++) {
                 Node n = Network.get(i);
                 AbstractDeccenCD prot = (AbstractDeccenCD) n.getProtocol(pid);
@@ -48,8 +49,8 @@ public class DeccenObserver implements Control {
                 centr += prot.getCentrality();
                 cycleNOSP += prot.getNOSPNumber();
                 cycleReports += prot.getReportsNumber();
-                if (CommonState.getTime() == CommonState.getEndTime()-1) {
-                    
+                if (CommonState.getTime() == CommonState.getEndTime() - 1) {
+
                     File file4 = new File("lastUpdate.txt");
                     File file5 = new File("result.txt");
                     FileWriter result, lastUpdate;
@@ -60,11 +61,12 @@ public class DeccenObserver implements Control {
                         bf4 = new BufferedWriter(lastUpdate);
                         bf5 = new BufferedWriter(result);
                         bf4.write(i + ", " + prot.getLastUpdate() + "\n");
-                        bf5.write(i + ", " + prot.getCentrality()+ "\n");
+                        bf5.write(i + ", " + prot.getCentrality() + "\n");
                         bf4.close();
                         bf5.close();
                     } catch (IOException ex) {
-                        Logger.getLogger(DeccenObserver.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(DeccenObserver.class.getName()).
+                                log(Level.SEVERE, null, ex);
                     }
 
                 }
@@ -81,14 +83,17 @@ public class DeccenObserver implements Control {
                 BufferedWriter bf1 = new BufferedWriter(messages);
                 BufferedWriter bf2 = new BufferedWriter(centrality);
                 BufferedWriter bf3 = new BufferedWriter(centralitypercycle);
-                bf1.write(CDState.getCycle() + ", " + NOSP + ", " + reports + "\n");
+                bf1.write(CDState.getCycle() + ", " + NOSP + ", " + reports
+                        + "\n");
                 bf2.write(CDState.getCycle() + ", " + centr + "\n");
-                bf3.write(CDState.getCycle() + ", " + cycleNOSP + ", " + cycleReports + "\n");
+                bf3.write(CDState.getCycle() + ", " + cycleNOSP + ", "
+                        + cycleReports + "\n");
                 bf1.close();
                 bf2.close();
                 bf3.close();
             } catch (IOException ex) {
-                Logger.getLogger(DeccenObserver.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(DeccenObserver.class.getName()).
+                        log(Level.SEVERE, null, ex);
             }
 
         }
